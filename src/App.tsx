@@ -4,7 +4,7 @@ import {TaskType, Todolist} from "./Todolist";
 
 export type FilterValuesType = 'all' | 'completed' | 'active';
 
-export const App = () => {
+const App = () => {
     console.log('App rerender');
 
     const initTasks: Array<TaskType> = [
