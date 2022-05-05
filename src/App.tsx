@@ -20,6 +20,20 @@ const App = () => {
         setTasks(filteredTasks)
     }
 
+    function getNewId(): number {
+        let newId: number;
+        debugger
+        do {
+            newId = Math.random();
+        } while (tasks.find(t => t.id === newId))
+        return newId;
+    }
+
+    function addNewTask(newTask: TaskType) {
+        console.log('newTask:', newTask)
+        const newTasks = [...tasks, {...newTask, id: getNewId()}]
+        setTasks(newTasks)
+    }
 
     return (
         <div className="App">
@@ -27,6 +41,7 @@ const App = () => {
                 title={'What to learn'}
                 tasks={tasks}
                 removeTask={removeTask}
+                addNewTask={addNewTask}
             />
         </div>
     );
