@@ -22,10 +22,9 @@ export const App = () => {
     }
 
     function changeTaskIsDone(id: number, value: boolean) {
-
-        const changedTasks = tasks.map(task => {
+        const changedTasks = tasks.map((task): TaskType => {
             if (task.id === id) {
-                return {...task, isDone: value}
+                return {...task, isDone: value};
             }
             return task
         });
