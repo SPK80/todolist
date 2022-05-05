@@ -21,17 +21,12 @@ const App = () => {
     }
 
     function getNewId(): number {
-        let newId: number;
-        debugger
-        do {
-            newId = Math.random();
-        } while (tasks.find(t => t.id === newId))
-        return newId;
+        return tasks[tasks.length-1].id+1;
     }
 
     function addNewTask(newTask: TaskType) {
-        console.log('newTask:', newTask)
         const newTasks = [...tasks, {...newTask, id: getNewId()}]
+        console.log(newTasks)
         setTasks(newTasks)
     }
 
