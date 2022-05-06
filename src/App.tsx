@@ -37,6 +37,8 @@ export const App = () => {
     }
 
     function addNewTask(newTaskTitle: string) {
+        if (!newTaskTitle) return;
+        
         const newTasks: Array<TaskType> = [
             {id: getNewId(), title: newTaskTitle, isDone: false},
             ...tasks
