@@ -1,24 +1,23 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {useRef} from "react";
 
 type NewTaskTitlePropsType = {
-    onAddNewTask: (newTaskTitle:string) => void
+    onAddNewTask: (newTaskTitle: string) => void
 }
 
 export const NewTaskTitle = (props: NewTaskTitlePropsType) => {
     
-    const [newTaskTitle, setNewTaskTitle] = useState<string>('')
+    const newTaskTitleInput = useRef<HTMLInputElement>(null)
     
-    const onChangeInputHandler= (event: ChangeEvent<HTMLInputElement>)=> {
-        setNewTaskTitle(event.currentTarget.value)
-    }
-    const onClickButtonHandler=()=>{
-        props.onAddNewTask(newTaskTitle)
-        setNewTaskTitle('')
+    const onClickButtonHandler = () => {
+        if(newTaskTitleInput && newTaskTitleInput.current) {
+            props.onAddNewTask(newTaskTitleInput.current.value)
+            newTaskTitleInput.current.value=''
+        }
     }
     
     return (
         <div>
-            <input value={newTaskTitle} onChange={onChangeInputHandler}/>
+            <input ref={newTaskTitleInput}/>
             <button onClick={onClickButtonHandler}>+</button>
         </div>
     )
