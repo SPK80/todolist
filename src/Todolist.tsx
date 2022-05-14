@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {useState} from "react";
 import {FilterValuesType} from "./App";
 import {NewTaskTitle} from "./NewTaskTitle";
 
@@ -33,24 +33,15 @@ export const Todolist = (props: TodolistPropsType) => {
         setFilter(value);
     }
     
-    const [newTaskTitle, setNewTaskTitle] = useState<string>('')
-    
-    function onChangeTaskTitleHandler(event: ChangeEvent<HTMLInputElement>) {
-        setNewTaskTitle(event.currentTarget.value)
-    }
-    
-    function AddTaskHandler() {
+    function AddTaskHandler(newTaskTitle:string) {
         props.addNewTask(newTaskTitle)
-        setNewTaskTitle('')
     }
     
     return (
         <div>
             <h3>{props.title}</h3>
             <NewTaskTitle
-                newTaskTitle={newTaskTitle}
-                onClickButton={AddTaskHandler}
-                onChangeInput={onChangeTaskTitleHandler}
+                onAddNewTask={AddTaskHandler}
             />
             <div>
                 <button onClick={() => changeFilter('all')}>All</button>

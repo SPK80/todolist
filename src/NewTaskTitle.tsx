@@ -1,14 +1,25 @@
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent, useState} from "react";
 
 type NewTaskTitlePropsType = {
-    newTaskTitle: string
-    onChangeInput: (e: ChangeEvent<HTMLInputElement>) => void
-    onClickButton: () => void
+    onAddNewTask: (newTaskTitle:string) => void
 }
 
-export const NewTaskTitle = (props: NewTaskTitlePropsType) => (
-    <div>
-        <input value={props.newTaskTitle} onChange={props.onChangeInput}/>
-        <button onClick={props.onClickButton}>+</button>
-    </div>
-)
+export const NewTaskTitle = (props: NewTaskTitlePropsType) => {
+    
+    const [newTaskTitle, setNewTaskTitle] = useState<string>('')
+    
+    const onChangeInputHandler= (event: ChangeEvent<HTMLInputElement>)=> {
+        setNewTaskTitle(event.currentTarget.value)
+    }
+    const onClickButtonHandler=()=>{
+        props.onAddNewTask(newTaskTitle)
+        setNewTaskTitle('')
+    }
+    
+    return (
+        <div>
+            <input value={newTaskTitle} onChange={onChangeInputHandler}/>
+            <button onClick={onClickButtonHandler}>+</button>
+        </div>
+    )
+}
