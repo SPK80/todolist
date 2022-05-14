@@ -1,17 +1,15 @@
 import React, {useState} from 'react';
 import './App.css';
 import {TaskType, Todolist} from "./Todolist";
-import  {v1 as uuidv1} from 'uuid';
+import  {v1} from 'uuid';
 
 export type FilterValuesType = 'all' | 'completed' | 'active';
 
 export const App = () => {
-    console.log('App rerender');
-
     const initTasks: Array<TaskType> = [
-        {id: '1', title: "HTML&CSS", isDone: true},
-        {id: '2', title: "JS", isDone: true},
-        {id: '3', title: "ReactJS", isDone: false}
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "ReactJS", isDone: false}
     ];
 
     const [tasks, setTasks] = useState<Array<TaskType>>(initTasks)
@@ -32,15 +30,11 @@ export const App = () => {
         setTasks(changedTasks)
     }
 
-    function getNewId(): string {
-        return uuidv1();
-    }
-
     function addNewTask(newTaskTitle: string) {
         if (!newTaskTitle) return;
         
         const newTasks: Array<TaskType> = [
-            {id: getNewId(), title: newTaskTitle, isDone: false},
+            {id: v1(), title: newTaskTitle, isDone: false},
             ...tasks
         ]
         setTasks(newTasks)
