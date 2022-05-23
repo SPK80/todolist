@@ -4,13 +4,13 @@ type NewTaskTitlePropsType = {
     onAddNewTask: (newTaskTitle: string) => void
 }
 
-export const NewTaskTitle = (props: NewTaskTitlePropsType) => {
+export const NewTaskInput:React.FC<NewTaskTitlePropsType> = ({onAddNewTask}) => {
     
     const newTaskTitleInput = useRef<HTMLInputElement>(null)
     
     const onClickButtonHandler = () => {
         if(newTaskTitleInput && newTaskTitleInput.current) {
-            props.onAddNewTask(newTaskTitleInput.current.value)
+            onAddNewTask(newTaskTitleInput.current.value)
             newTaskTitleInput.current.value=''
         }
     }

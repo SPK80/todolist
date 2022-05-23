@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {NewTaskTitle} from "./NewTaskTitle";
+import {NewTaskInput} from "./NewTaskInput";
 import Task, {TaskType} from "./Task";
 import FilterButton, {FilterValuesType} from "./FilterButton";
 
@@ -33,12 +33,10 @@ export const Todolist = (props: TodolistPropsType) => {
         props.addNewTask(newTaskTitle)
     }
 
-    console.log(filter)
-
     return (
         <div>
             <h3>{props.title}</h3>
-            <NewTaskTitle
+            <NewTaskInput
                 onAddNewTask={AddTaskHandler}
             />
             <div>
@@ -59,9 +57,6 @@ export const Todolist = (props: TodolistPropsType) => {
                     active={filter === "completed"}
 
                 />
-                {/*<button onClick={() => changeFilter('all')}>All</button>*/}
-                {/*<button onClick={() => changeFilter('active')}>Active</button>*/}
-                {/*<button onClick={() => changeFilter('completed')}>Completed</button>*/}
             </div>
             <ul>
                 {tasksForTodoList.map(task => (
