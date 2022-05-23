@@ -1,32 +1,33 @@
-import React, {useState} from "react";
+import React from "react";
 import {NewTaskInput} from "./NewTaskInput";
 import Task, {TaskType} from "./Task";
 import FiltersPanel, {FilterValuesType} from "./FiltersPanel";
 
 type TodolistPropsType = {
+    id: string
     title: string
     tasks: Array<TaskType>
     removeTask: (id: string) => void
     changeTaskIsDone: (id: string, value: boolean) => void
     addNewTask: (newTaskTitle: string) => void
+    filter: FilterValuesType
+    changeFilter: (filter: FilterValuesType) => void
 }
 
 const Todolist: React.FC<TodolistPropsType> = (props) => {
     
-    const [filter, setFilter] = useState<FilterValuesType>('all');
-    
     let tasksForTodoList = props.tasks;
     
-    if (filter === 'completed') {
+    if (props.filter === 'completed') {
         tasksForTodoList = props.tasks.filter(task => task.isDone);
     }
     
-    if (filter === 'active') {
+    if (props.filter === 'active') {
         tasksForTodoList = props.tasks.filter(task => !task.isDone);
     }
     
     function toggleFilterHandler(value: FilterValuesType) {
-        setFilter(value);
+        props.changeFilter(value);
     }
     
     function addNewTaskHandler(newTaskTitle: string) {
@@ -41,7 +42,7 @@ const Todolist: React.FC<TodolistPropsType> = (props) => {
             />
             
             <FiltersPanel
-                filterValue={filter}
+                filterValue={props.filter}
                 toggleFilter={toggleFilterHandler}
             />
             
