@@ -1,7 +1,6 @@
 import React from 'react';
 import s from './FilterButton.module.css'
-
-export type FilterValuesType = 'all' | 'completed' | 'active';
+import {FilterValuesType} from "./FiltersPanel";
 
 type FilterButtonPropsType = {
     value: FilterValuesType
