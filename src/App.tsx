@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Todolist} from "./Todolist";
-import  {v1} from 'uuid';
-import {TaskType} from "./Task";
-
-export type FilterValuesType = 'all' | 'completed' | 'active';
+import {Todolist} from "./Components/Todolist";
+import {v1} from 'uuid';
+import {TaskType} from "./Components/Task";
 
 export const App = () => {
     const initTasks: Array<TaskType> = [
