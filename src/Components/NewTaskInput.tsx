@@ -1,16 +1,16 @@
 import React, {useRef} from "react";
 
 type NewTaskTitlePropsType = {
-    onAddNewTask: (newTaskTitle: string) => void
+    addNewTask: (newTaskTitle: string) => void
 }
 
-export const NewTaskInput:React.FC<NewTaskTitlePropsType> = ({onAddNewTask}) => {
+export const NewTaskInput:React.FC<NewTaskTitlePropsType> = ({addNewTask}) => {
     
     const newTaskTitleInput = useRef<HTMLInputElement>(null)
     
     const onClickButtonHandler = () => {
         if(newTaskTitleInput && newTaskTitleInput.current) {
-            onAddNewTask(newTaskTitleInput.current.value)
+            addNewTask(newTaskTitleInput.current.value)
             newTaskTitleInput.current.value=''
         }
     }
@@ -22,3 +22,5 @@ export const NewTaskInput:React.FC<NewTaskTitlePropsType> = ({onAddNewTask}) => 
         </div>
     )
 }
+
+export default NewTaskInput;

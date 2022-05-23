@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {NewTaskInput} from "./NewTaskInput";
 import Task, {TaskType} from "./Task";
-import FiltersPanel, {FilterValuesType} from "./FiltersPanel";
-
+import FiltersPanel from "./FiltersPanel";
+import {FilterValuesType} from "./FilterButton";
 
 type TodolistPropsType = {
     title: string
@@ -12,7 +12,7 @@ type TodolistPropsType = {
     addNewTask: (newTaskTitle: string) => void
 }
 
-export const Todolist: React.FC<TodolistPropsType> = (props) => {
+const Todolist: React.FC<TodolistPropsType> = (props) => {
     
     const [filter, setFilter] = useState<FilterValuesType>('all');
     let tasksForTodoList = props.tasks;
@@ -25,11 +25,11 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
         tasksForTodoList = props.tasks.filter(task => !task.isDone);
     }
     
-    function changeFilter(value: FilterValuesType) {
+    function toggleFilterHandler(value: FilterValuesType) {
         setFilter(value);
     }
     
-    function AddTaskHandler(newTaskTitle: string) {
+    function addNewTaskHandler(newTaskTitle: string) {
         props.addNewTask(newTaskTitle)
     }
     
@@ -37,11 +37,11 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
         <div>
             <h3>{props.title}</h3>
             <NewTaskInput
-                onAddNewTask={AddTaskHandler}
+                addNewTask={addNewTaskHandler}
             />
             
             <FiltersPanel
-                onToggleFilter={changeFilter}
+                toggleFilter={toggleFilterHandler}
                 filterValue={filter}
             />
             
@@ -59,3 +59,4 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
         </div>
     )
 }
+export default Todolist;
