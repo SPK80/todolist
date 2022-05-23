@@ -8,7 +8,7 @@ export const App = () => {
     const initTasks: Array<TaskType> = [
         {id: v1(), title: "HTML&CSS", isDone: true},
         {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false}
+        {id: v1(), title: "ReactJS", isDone: false},
     ];
 
     const [tasks, setTasks] = useState<Array<TaskType>>(initTasks)

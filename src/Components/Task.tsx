@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react';
-
+import s from './NewTaskInput.module.css'
 export type TaskType = {
     id: string,
     title: string,
@@ -14,7 +14,6 @@ type TaskPropsType = {
 
 const Task: React.FC<TaskPropsType> = ({task, removeTask, changeTaskIsDone}) => {
     
-    
     const onChangeNewTaskNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
         changeTaskIsDone(task.id, e.target.checked)
     };
@@ -23,8 +22,10 @@ const Task: React.FC<TaskPropsType> = ({task, removeTask, changeTaskIsDone}) => 
         removeTask(task.id)
     };
     
+    const className = task.isDone ? s.taskIsDone:''
+    
     return (
-        <li>
+        <li className={className}>
             <input
                 type="checkbox"
                 checked={task.isDone}
