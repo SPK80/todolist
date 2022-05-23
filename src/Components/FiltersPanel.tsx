@@ -1,31 +1,35 @@
 import React from 'react';
-import FilterButton, {FilterValuesType} from "./FilterButton";
+import FilterButton from "./FilterButton";
+
+export type FilterValuesType = 'all' | 'completed' | 'active';
 
 type FiltersPanelPropsType = {
     toggleFilter: (filterValue: FilterValuesType) => void
     filterValue: FilterValuesType
 }
 
-const FiltersPanel: React.FC<FiltersPanelPropsType> = ({filterValue, toggleFilter}) => {
+const FiltersPanel: React.FC<FiltersPanelPropsType> = ({filterValue,toggleFilter}) => {
+    
+    const toggleHandler = (filterValue:FilterValuesType) => {
+        toggleFilter(filterValue)
+    };
+    
     return (
         <div>
             <FilterButton
-                value={"all"}
-                toggle={toggleFilter}
+                toggle={()=>toggleHandler("all")}
                 active={filterValue === "all"}
-            />
+            >All</FilterButton>
             <FilterButton
-                value={"active"}
-                toggle={toggleFilter}
+                toggle={()=>toggleHandler("active")}
                 active={filterValue === "active"}
-            
-            />
+            >Active</FilterButton>
+    
             <FilterButton
-                value={"completed"}
-                toggle={toggleFilter}
+                toggle={()=>toggleHandler("completed")}
                 active={filterValue === "completed"}
-            
-            />
+            >Completed</FilterButton>
+    
         </div>
     );
 };

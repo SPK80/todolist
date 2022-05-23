@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import {NewTaskInput} from "./NewTaskInput";
 import Task, {TaskType} from "./Task";
-import FiltersPanel from "./FiltersPanel";
-import {FilterValuesType} from "./FilterButton";
+import FiltersPanel, {FilterValuesType} from "./FiltersPanel";
 
 type TodolistPropsType = {
     title: string
@@ -15,6 +14,7 @@ type TodolistPropsType = {
 const Todolist: React.FC<TodolistPropsType> = (props) => {
     
     const [filter, setFilter] = useState<FilterValuesType>('all');
+    
     let tasksForTodoList = props.tasks;
     
     if (filter === 'completed') {
@@ -41,8 +41,8 @@ const Todolist: React.FC<TodolistPropsType> = (props) => {
             />
             
             <FiltersPanel
-                toggleFilter={toggleFilterHandler}
                 filterValue={filter}
+                toggleFilter={toggleFilterHandler}
             />
             
             <ul>
