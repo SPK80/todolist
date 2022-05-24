@@ -15,39 +15,30 @@ type TodolistPropsType = {
 }
 
 const Todolist: React.FC<TodolistPropsType> = (props) => {
-    
-    let tasksForTodoList = props.tasks;
-    
-    if (props.filter === 'completed') {
-        tasksForTodoList = props.tasks.filter(task => task.isDone);
-    }
-    
-    if (props.filter === 'active') {
-        tasksForTodoList = props.tasks.filter(task => !task.isDone);
-    }
-    
+
+
     function toggleFilterHandler(value: FilterValuesType) {
         props.changeFilter(value);
     }
-    
+
     function addNewTaskHandler(newTaskTitle: string) {
         props.addNewTask(newTaskTitle)
     }
-    
+
     return (
         <div>
             <h3>{props.title}</h3>
             <NewTaskInput
                 addNewTask={addNewTaskHandler}
             />
-            
+
             <FiltersPanel
                 filterValue={props.filter}
                 toggleFilter={toggleFilterHandler}
             />
-            
+
             <ul>
-                {tasksForTodoList.map(task => (
+                {props.tasks.map(task => (
                         <Task
                             key={task.id}
                             task={task}

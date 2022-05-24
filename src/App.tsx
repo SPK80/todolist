@@ -22,8 +22,7 @@ export const App = () => {
         ]
     )
 
-
-    const initTasks = {
+    const [allTasks, setAllTasks] = useState({
         [todoList1Id]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -35,10 +34,7 @@ export const App = () => {
             {id: v1(), title: "Milk", isDone: false},
         ],
 
-    }
-
-    const [allTasks, setAllTasks] = useState(initTasks)
-
+    })
 
     const changeTaskIsDone = (id: string, value: boolean, todoListId: string) => {
 
@@ -76,14 +72,20 @@ export const App = () => {
         <div className="App">
             {
                 todoLists.map(todoList => {
-                    const tasks = allTasks[todoList.id]
 
+                    let tasksForTodoList = allTasks[todoList.id]
+                    if (todoList.filter === 'completed') {
+                        tasksForTodoList = tasksForTodoList.filter(task => task.isDone);
+                    }
+                    if (todoList.filter === 'active') {
+                        tasksForTodoList = tasksForTodoList.filter(task => !task.isDone);
+                    }
 
                     return <Todolist
                         key={todoList.id}
                         id={todoList.id}
                         title={todoList.title}
-                        tasks={tasks}
+                        tasks={tasksForTodoList}
                         removeTask={taskId => removeTask(taskId, todoList.id)}
                         changeTaskIsDone={(id, value) => changeTaskIsDone(id, value, todoList.id)}
                         addNewTask={newTaskTitle => addNewTask(newTaskTitle, todoList.id)}
