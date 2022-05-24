@@ -3,11 +3,16 @@ import './App.css';
 import Todolist from "./Components/Todolist";
 import {v1} from 'uuid';
 import {FilterValuesType} from "./Components/FiltersPanel";
+import {TaskType} from "./Components/Task";
 
 type TodoListType = {
     id: string
     title: string
     filter: FilterValuesType
+}
+
+type TaskStateType = {
+    [id: string]: Array<TaskType>
 }
 
 export const App = () => {
@@ -22,7 +27,7 @@ export const App = () => {
         ]
     )
 
-    const [allTasks, setAllTasks] = useState({
+    const [allTasks, setAllTasks] = useState<TaskStateType>({
         [todoList1Id]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -33,21 +38,21 @@ export const App = () => {
             {id: v1(), title: "Cheese", isDone: true},
             {id: v1(), title: "Milk", isDone: false},
         ],
-
     })
 
     const changeTaskIsDone = (taskId: string, value: boolean, todoListId: string) => {
-
         const tasks = allTasks[todoListId]
-        const task = tasks.find(t => t.id === taskId)
-        if (!task) return
-        task.isDone = value
-
-        setAllTasks({...allTasks})
+        const updatedTasks = tasks.map(t=>t.id===taskId ? {...t, isDone:value}:t)
+        setAllTasks({...allTasks, [todoListId]:updatedTasks})
     };
+    
+    const changeFilterHandler = (newFilter: FilterValuesType, todoListId: string) => {
+        const updatedTodoLists = todoLists.map(tl=>tl.id===todoListId? {...tl, filter:newFilter}:tl)
+        setTodoLists([...updatedTodoLists])
+    }
 
     const addNewTask = (newTaskTitle: string, todoListId: string) => {
-        if (!newTaskTitle) return;
+        if (!newTaskTitle.trim()) return;
         allTasks[todoListId] = [
             {id: v1(), title: newTaskTitle, isDone: false},
             ...allTasks[todoListId]
@@ -58,14 +63,6 @@ export const App = () => {
     const removeTask = (id: string, todoListId: string) => {
         allTasks[todoListId] = allTasks[todoListId].filter(task => task.id !== id)
         setAllTasks({...allTasks})
-    };
-
-    const changeFilterHandler = (newFilter: FilterValuesType, todoListId: string) => {
-        const todoList = todoLists.find(tl => tl.id === todoListId)
-        if (todoList) {
-            todoList.filter = newFilter
-            setTodoLists([...todoLists])
-        }
     };
 
     return (
