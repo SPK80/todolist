@@ -36,10 +36,10 @@ export const App = () => {
 
     })
 
-    const changeTaskIsDone = (id: string, value: boolean, todoListId: string) => {
+    const changeTaskIsDone = (taskId: string, value: boolean, todoListId: string) => {
 
         const tasks = allTasks[todoListId]
-        const task = tasks.find(t => t.id === id)
+        const task = tasks.find(t => t.id === taskId)
         if (!task) return
         task.isDone = value
 
@@ -60,8 +60,8 @@ export const App = () => {
         setAllTasks({...allTasks})
     };
 
-    const changeFilterHandler = (newFilter: FilterValuesType, id: string) => {
-        const todoList = todoLists.find(tl => tl.id === id)
+    const changeFilterHandler = (newFilter: FilterValuesType, todoListId: string) => {
+        const todoList = todoLists.find(tl => tl.id === todoListId)
         if (todoList) {
             todoList.filter = newFilter
             setTodoLists([...todoLists])
