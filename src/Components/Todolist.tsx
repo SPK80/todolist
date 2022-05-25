@@ -12,6 +12,7 @@ type TodolistPropsType = {
     changeTaskIsDone: (id: string, value: boolean, todoListId: string) => void
     addNewTask: (newTaskTitle: string, todoListId: string) => void
     changeFilter: (filter: FilterValuesType, todoListId: string) => void
+    onRemoveTodoList: (todoListId: string) => void
 }
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
@@ -34,10 +35,9 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     
     return (
         <div>
+            <button onClick={() => props.onRemoveTodoList(props.todoListId)}>X</button>
             <h3>{props.title}</h3>
-            <NewTaskInput
-                addNewTask={addNewTaskHandler}
-            />
+            <NewTaskInput addNewTask={addNewTaskHandler}/>
             
             <FiltersPanel
                 filterValue={props.filter}

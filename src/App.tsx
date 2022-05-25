@@ -66,7 +66,7 @@ export const App = () => {
     };
     
     function onRemoveTodoListHandler(todoListId: string) {
-        setTodoLists(todoLists.filter(tl=>tl.id!==todoListId))
+        setTodoLists(todoLists.filter(tl => tl.id !== todoListId))
         delete allTasks[todoListId]
     }
     
@@ -83,9 +83,9 @@ export const App = () => {
                         tasksForTodoList = tasksForTodoList.filter(task => !task.isDone);
                     }
                     
-                    return <div key={todoList.id}>
-                        <button onClick={()=>onRemoveTodoListHandler(todoList.id)}>X</button>
+                    return (
                         <Todolist
+                            key={todoList.id}
                             todoListId={todoList.id}
                             title={todoList.title}
                             tasks={tasksForTodoList}
@@ -94,7 +94,8 @@ export const App = () => {
                             addNewTask={addNewTask}
                             filter={todoList.filter}
                             changeFilter={changeFilterHandler}
-                        /></div>
+                            onRemoveTodoList={onRemoveTodoListHandler}
+                        />)
                 })
             }
         
