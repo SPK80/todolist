@@ -72,8 +72,8 @@ export const App = () => {
     
     return (
         <div className="App">
-            {
-                todoLists.map(todoList => {
+            {todoLists.length
+                ? todoLists.map(todoList => {
                     
                     let tasksForTodoList = allTasks[todoList.id]
                     if (todoList.filter === 'completed') {
@@ -97,8 +97,8 @@ export const App = () => {
                             onRemoveTodoList={onRemoveTodoListHandler}
                         />)
                 })
+                : <span>Create your 1st todo list</span>
             }
-        
         </div>
     );
 }
