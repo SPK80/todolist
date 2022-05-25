@@ -1,4 +1,5 @@
 import React, {useRef, KeyboardEvent, useState} from "react";
+import s from './NewTaskInput.module.css'
 
 type NewTaskTitlePropsType = {
     addNewTask: (newTaskTitle: string) => void
@@ -27,10 +28,10 @@ export const NewTaskInput: React.FC<NewTaskTitlePropsType> = ({addNewTask}) => {
         <div>
             <input
                 ref={newTaskTitleInput}
-                onKeyPress={onInputKeyPressHandler}
+                onKeyDown={onInputKeyPressHandler}
             />
             <button onClick={onClickButtonHandler}>+</button>
-            {error && <div>Input text required</div>}
+            {error && <div className={s.error}>Input text required</div>}
         </div>
     )
 }
