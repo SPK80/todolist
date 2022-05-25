@@ -1,7 +1,7 @@
 import React from "react";
 import {NewTaskInput} from "./NewTaskInput";
-import Task, {TaskType} from "./Task";
-import FiltersPanel, {FilterValuesType} from "./FiltersPanel";
+import {Task, TaskType} from "./Task";
+import {FiltersPanel, FilterValuesType} from "./FiltersPanel";
 
 type TodolistPropsType = {
     todoListId: string
@@ -14,25 +14,23 @@ type TodolistPropsType = {
     changeFilter: (filter: FilterValuesType, todoListId: string) => void
 }
 
-const Todolist: React.FC<TodolistPropsType> = (props) => {
+export const Todolist: React.FC<TodolistPropsType> = (props) => {
     
-    
-    function toggleFilterHandler(value: FilterValuesType) {
+    const toggleFilterHandler = (value: FilterValuesType) => {
         props.changeFilter(value, props.todoListId);
-    }
+    };
     
-    function addNewTaskHandler(newTaskTitle: string) {
+    const addNewTaskHandler = (newTaskTitle: string) => {
         props.addNewTask(newTaskTitle, props.todoListId)
-    }
+    };
     
-    
-    function removeTaskHandler(taskId: string) {
+    const removeTaskHandler = (taskId: string) => {
         props.removeTask(taskId, props.todoListId)
-    }
+    };
     
-    function changeTaskIsDoneHandler(taskId: string, value: boolean) {
+    const changeTaskIsDoneHandler = (taskId: string, value: boolean) => {
         props.changeTaskIsDone(taskId, value, props.todoListId)
-    }
+    };
     
     return (
         <div>
@@ -60,4 +58,3 @@ const Todolist: React.FC<TodolistPropsType> = (props) => {
         </div>
     )
 }
-export default Todolist;

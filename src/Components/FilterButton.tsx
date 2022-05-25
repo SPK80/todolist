@@ -6,7 +6,7 @@ type FilterButtonPropsType = {
     active: boolean
 }
 
-const FilterButton: React.FC<FilterButtonPropsType> =
+export const FilterButton: React.FC<FilterButtonPropsType> =
     (props) => {
     const className = props.active ? s.active : ''
     return (
@@ -16,7 +16,5 @@ const FilterButton: React.FC<FilterButtonPropsType> =
         >
             {props.children }
         </button>
-    );
-};
-
-export default FilterButton;
+    )
+}

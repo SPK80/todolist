@@ -13,7 +13,7 @@ type TaskPropsType = {
     changeTaskIsDone: (id: string, value: boolean) => void
 }
 
-const Task: React.FC<TaskPropsType> = ({task, removeTask, changeTaskIsDone}) => {
+export const Task: React.FC<TaskPropsType> = ({task, removeTask, changeTaskIsDone}) => {
     
     const onChangeNewTaskNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
         changeTaskIsDone(task.id, e.target.checked)
@@ -23,7 +23,7 @@ const Task: React.FC<TaskPropsType> = ({task, removeTask, changeTaskIsDone}) => 
         removeTask(task.id)
     };
     
-    const className = task.isDone ? s.taskIsDone:''
+    const className = task.isDone ? s.taskIsDone : ''
     
     return (
         <li className={className}>
@@ -36,7 +36,4 @@ const Task: React.FC<TaskPropsType> = ({task, removeTask, changeTaskIsDone}) => 
             <span>{task.title}</span>
         </li>
     )
-    
-};
-
-export default Task;
+}
