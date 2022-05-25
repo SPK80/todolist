@@ -44,17 +44,21 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                 toggleFilter={toggleFilterHandler}
             />
             
-            <ul>
-                {props.tasks.map(task => (
-                        <Task
-                            key={task.id}
-                            task={task}
-                            removeTask={removeTaskHandler}
-                            changeTaskIsDone={changeTaskIsDoneHandler}
-                        />
-                    )
-                )}
-            </ul>
+            {
+                props.tasks.length
+                    ? <ul>
+                        {props.tasks.map(task => (
+                                <Task
+                                    key={task.id}
+                                    task={task}
+                                    removeTask={removeTaskHandler}
+                                    changeTaskIsDone={changeTaskIsDoneHandler}
+                                />
+                            )
+                        )}
+                    </ul>
+                    : <span>Create your task</span>
+            }
         </div>
     )
 }
