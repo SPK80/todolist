@@ -1,5 +1,6 @@
 import React, {ChangeEvent} from 'react';
-import s from './NewTaskInput.module.css'
+import s from './Task.module.css'
+
 export type TaskType = {
     id: string,
     title: string,
