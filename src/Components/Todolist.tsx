@@ -35,8 +35,10 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     
     return (
         <div>
-            <button onClick={() => props.onRemoveTodoList(props.todoListId)}>X</button>
-            <h3>{props.title}</h3>
+            <h3>
+                <button onClick={() => props.onRemoveTodoList(props.todoListId)}>X</button>
+                {props.title}
+            </h3>
             <NewTaskInput addNewTask={addNewTaskHandler}/>
             
             <FiltersPanel
