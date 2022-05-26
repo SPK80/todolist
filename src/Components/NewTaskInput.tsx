@@ -35,5 +35,3 @@ export const NewTaskInput: React.FC<NewTaskTitlePropsType> = ({addNewTask}) => {
         </div>
     )
 }
-
-export default NewTaskInput;
