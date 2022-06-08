@@ -10,9 +10,10 @@ type FiltersPanelPropsType = {
 
 export const FiltersPanel: React.FC<FiltersPanelPropsType> = ({filterValue, toggleFilter}) => {
     
-    const toggleHandler = (filterValue: FilterValuesType) => {
-        toggleFilter(filterValue)
-    };
+    const toggleAllFilter = () => toggleFilter("all")
+    const toggleActiveFilter = () => toggleFilter("active")
+    const toggleCompletedFilter = () => toggleFilter("completed")
+    const getColor = (filter: FilterValuesType) => filterValue === filter ? "primary" : "default"
     
     return (
         <ButtonGroup
@@ -21,16 +22,16 @@ export const FiltersPanel: React.FC<FiltersPanelPropsType> = ({filterValue, togg
             size={"small"}
         >
             <Button
-                color={filterValue === "all" ? "primary" : "default"}
-                onClick={() => toggleHandler("all")}
+                color={getColor("all")}
+                onClick={toggleAllFilter}
             > All </Button>
             <Button
-                color={filterValue === "active" ? "primary" : "default"}
-                onClick={() => toggleHandler("active")}
+                color={getColor("active")}
+                onClick={toggleActiveFilter}
             > Active </Button>
             <Button
-                color={filterValue === "completed" ? "primary" : "default"}
-                onClick={() => toggleHandler("completed")}
+                color={getColor("completed")}
+                onClick={toggleCompletedFilter}
             > Completed </Button>
         </ButtonGroup>
     )
