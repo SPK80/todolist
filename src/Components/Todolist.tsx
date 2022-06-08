@@ -2,9 +2,9 @@ import React from "react";
 import {StringInputForm} from "./StringInputForm";
 import {Task, TaskType} from "./Task";
 import {FiltersPanel, FilterValuesType} from "./FiltersPanel";
+import {EditableSpan} from "./EditableSpan";
 import {IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {EditableSpan} from "./EditableSpan";
 
 type TodolistPropsType = {
     todoListId: string
@@ -49,12 +49,6 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     return (
         <div>
             <h3>
-                <button onClick={() => props.onRemoveTodoList(props.todoListId)}>X</button>
-                <EditableSpan
-                    value={props.title}
-                    confirm={changeTodoListTitle}
-                />
-            
                 <IconButton
                     color={"secondary"}
                     size={"small"}
@@ -62,7 +56,10 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                 >
                     <Delete/>
                 </IconButton>
-                {props.title}
+                <EditableSpan
+                    value={props.title}
+                    confirm={changeTodoListTitle}
+                />
             </h3>
             <StringInputForm
                 label={"Title"}
