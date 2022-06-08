@@ -18,6 +18,7 @@ type TodoListContainerPropsType = {
     changeFilter: (filter: FilterValuesType, todoListId: string) => void
     onRemoveTodoList: (todoListId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
+    changeTodoListTitle: (newTitle: string, todoListId: string) => void
 }
 export const TodoListContainer: React.FC<TodoListContainerPropsType> = (props) => {
     
@@ -42,5 +43,6 @@ export const TodoListContainer: React.FC<TodoListContainerPropsType> = (props) =
             changeFilter={props.changeFilter}
             onRemoveTodoList={props.onRemoveTodoList}
             changeTaskTitle={props.changeTaskTitle}
+            changeTodoListTitle={props.changeTodoListTitle}
         />)
 }

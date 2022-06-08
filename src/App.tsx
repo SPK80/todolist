@@ -83,6 +83,13 @@ export const App = () => {
         setAllTasks({...allTasks, [todoListId]: changedTasks})
     }
     
+    const changeTodoListTitle = (newTitle: string, todoListId: string) => {
+        const changedTodoLists = todoLists.map((todoList): TodoListType =>
+            (todoList.id !== todoListId) ? todoList : {...todoList, title: newTitle}
+        )
+        setTodoLists(changedTodoLists)
+    }
+    
     return (
         <div className="App">
             <StringInputForm
@@ -101,6 +108,7 @@ export const App = () => {
                         changeFilter={changeFilter}
                         onRemoveTodoList={removeTodoList}
                         changeTaskTitle={changeTaskTitle}
+                        changeTodoListTitle={changeTodoListTitle}
                     />)
                 :
                 <span>Create your 1st todo list</span>

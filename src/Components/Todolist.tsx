@@ -2,6 +2,7 @@ import React from "react";
 import {StringInputForm} from "./StringInputForm";
 import {Task, TaskType} from "./Task";
 import {FiltersPanel, FilterValuesType} from "./FiltersPanel";
+import {EditableSpan} from "./EditableSpan";
 
 type TodolistPropsType = {
     todoListId: string
@@ -14,6 +15,7 @@ type TodolistPropsType = {
     changeFilter: (filter: FilterValuesType, todoListId: string) => void
     onRemoveTodoList: (todoListId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
+    changeTodoListTitle: (newTitle: string, todoListId: string) => void
 }
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
@@ -38,11 +40,19 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
         props.changeTaskTitle(taskId, newTitle, props.todoListId)
     }
     
+    const changeTodoListTitle = (newTitle: string) => {
+        props.changeTodoListTitle(newTitle, props.todoListId)
+    }
+    
     return (
         <div>
             <h3>
                 <button onClick={() => props.onRemoveTodoList(props.todoListId)}>X</button>
-                {props.title}
+                <EditableSpan
+                    value={props.title}
+                    confirm={changeTodoListTitle}
+                />
+            
             </h3>
             <StringInputForm confirm={addNewTaskHandler}/>
             
