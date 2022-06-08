@@ -21,6 +21,7 @@ export const StringInputForm: React.FC<StringInputFormPropsType> = ({confirm}) =
     const onInputKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(false)
         if (e.key === 'Enter') onClickButtonHandler()
+        if (e.key === 'Escape' && inputRef?.current) inputRef.current.value = ''
     }
     
     return (
