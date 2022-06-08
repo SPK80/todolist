@@ -1,5 +1,5 @@
 import React from 'react';
-import {FilterButton} from "./FilterButton";
+import {Button, ButtonGroup} from "@material-ui/core";
 
 export type FilterValuesType = 'all' | 'completed' | 'active';
 
@@ -8,28 +8,30 @@ type FiltersPanelPropsType = {
     filterValue: FilterValuesType
 }
 
-export const FiltersPanel: React.FC<FiltersPanelPropsType> = ({filterValue,toggleFilter}) => {
+export const FiltersPanel: React.FC<FiltersPanelPropsType> = ({filterValue, toggleFilter}) => {
     
-    const toggleHandler = (filterValue:FilterValuesType) => {
+    const toggleHandler = (filterValue: FilterValuesType) => {
         toggleFilter(filterValue)
     };
     
     return (
-        <div>
-            <FilterButton
-                toggle={()=>toggleHandler("all")}
-                active={filterValue === "all"}
-            >All</FilterButton>
-            <FilterButton
-                toggle={()=>toggleHandler("active")}
-                active={filterValue === "active"}
-            >Active</FilterButton>
-    
-            <FilterButton
-                toggle={()=>toggleHandler("completed")}
-                active={filterValue === "completed"}
-            >Completed</FilterButton>
-    
-        </div>
+        <ButtonGroup
+            style={{marginTop: "5px"}}
+            variant={"contained"}
+            size={"small"}
+        >
+            <Button
+                color={filterValue === "all" ? "primary" : "default"}
+                onClick={() => toggleHandler("all")}
+            > All </Button>
+            <Button
+                color={filterValue === "active" ? "primary" : "default"}
+                onClick={() => toggleHandler("active")}
+            > Active </Button>
+            <Button
+                color={filterValue === "completed" ? "primary" : "default"}
+                onClick={() => toggleHandler("completed")}
+            > Completed </Button>
+        </ButtonGroup>
     )
 }
