@@ -13,6 +13,7 @@ type TodolistPropsType = {
     addNewTask: (newTaskTitle: string, todoListId: string) => void
     changeFilter: (filter: FilterValuesType, todoListId: string) => void
     onRemoveTodoList: (todoListId: string) => void
+    changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
 }
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
@@ -27,11 +28,15 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     
     const removeTaskHandler = (taskId: string) => {
         props.removeTask(taskId, props.todoListId)
-    };
+    }
     
     const changeTaskIsDoneHandler = (taskId: string, value: boolean) => {
         props.changeTaskIsDone(taskId, value, props.todoListId)
-    };
+    }
+    
+    const changeTaskTitleHandler = (taskId: string, newTitle: string) => {
+        props.changeTaskTitle(taskId, newTitle, props.todoListId)
+    }
     
     return (
         <div>
@@ -55,6 +60,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                                     task={task}
                                     removeTask={removeTaskHandler}
                                     changeTaskIsDone={changeTaskIsDoneHandler}
+                                    changeTaskTitle={changeTaskTitleHandler}
                                 />
                             )
                         )}

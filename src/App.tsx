@@ -59,7 +59,7 @@ export const App = () => {
         setAllTasks({...allTasks})
     }
     
-    const onRemoveTodoList = (todoListId: string) => {
+    const removeTodoList = (todoListId: string) => {
         setTodoLists(todoLists.filter(tl => tl.id !== todoListId))
         delete allTasks[todoListId]
     }
@@ -73,6 +73,14 @@ export const App = () => {
         }
         setTodoLists([...todoLists, newTodoList])
         setAllTasks({...allTasks, [newTodoListId]: []})
+    }
+    
+    const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
+        
+        const changedTasks = allTasks[todoListId].map((task): TaskType =>
+            (task.id !== taskId) ? task : {...task, title: newTitle}
+        )
+        setAllTasks({...allTasks, [todoListId]: changedTasks})
     }
     
     return (
@@ -91,7 +99,8 @@ export const App = () => {
                         changeTaskIsDone={changeTaskIsDone}
                         addNewTask={addNewTask}
                         changeFilter={changeFilter}
-                        onRemoveTodoList={onRemoveTodoList}
+                        onRemoveTodoList={removeTodoList}
+                        changeTaskTitle={changeTaskTitle}
                     />)
                 :
                 <span>Create your 1st todo list</span>
