@@ -13,7 +13,7 @@ export const StringInputForm: React.FC<StringInputFormPropsType> = ({confirm}) =
     const onClickButtonHandler = () => {
         if (inputRef?.current) {
             if (inputRef.current.value.trim() === '') setError(true)
-            confirm(inputRef.current.value)
+            else confirm(inputRef.current.value)
             inputRef.current.value = ''
         }
     }

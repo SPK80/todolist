@@ -47,7 +47,6 @@ export const App = () => {
     }
     
     const addNewTask = (newTaskTitle: string, todoListId: string) => {
-        if (!newTaskTitle.trim()) return;
         allTasks[todoListId] = [
             {id: v1(), title: newTaskTitle, isDone: false},
             ...allTasks[todoListId]
