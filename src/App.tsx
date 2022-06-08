@@ -1,19 +1,9 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Todolist} from "./Components/Todolist";
 import {v1} from 'uuid';
 import {FilterValuesType} from "./Components/FiltersPanel";
 import {TaskType} from "./Components/Task";
-
-type TodoListType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
-
-type TaskStateType = {
-    [id: string]: Array<TaskType>
-}
+import {TodoListContainer, TodoListType} from "./TodoListContainer";
 
 export const App = () => {
     
@@ -27,6 +17,9 @@ export const App = () => {
         ]
     )
     
+    type TaskStateType = {
+        [id: string]: Array<TaskType>
+    }
     const [allTasks, setAllTasks] = useState<TaskStateType>({
         [todoList1Id]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
@@ -46,7 +39,7 @@ export const App = () => {
         setAllTasks({...allTasks, [todoListId]: updatedTasks})
     };
     
-    const changeFilterHandler = (newFilter: FilterValuesType, todoListId: string) => {
+    const changeFilter = (newFilter: FilterValuesType, todoListId: string) => {
         const updatedTodoLists = todoLists.map(tl => tl.id === todoListId ? {...tl, filter: newFilter} : tl)
         setTodoLists([...updatedTodoLists])
     }
@@ -65,7 +58,7 @@ export const App = () => {
         setAllTasks({...allTasks})
     };
     
-    function onRemoveTodoListHandler(todoListId: string) {
+    function onRemoveTodoList(todoListId: string) {
         setTodoLists(todoLists.filter(tl => tl.id !== todoListId))
         delete allTasks[todoListId]
     }
@@ -73,31 +66,19 @@ export const App = () => {
     return (
         <div className="App">
             {todoLists.length
-                ? todoLists.map(todoList => {
-                    
-                    let tasksForTodoList = allTasks[todoList.id]
-                    if (todoList.filter === 'completed') {
-                        tasksForTodoList = tasksForTodoList.filter(task => task.isDone);
-                    }
-                    if (todoList.filter === 'active') {
-                        tasksForTodoList = tasksForTodoList.filter(task => !task.isDone);
-                    }
-                    
-                    return (
-                        <Todolist
-                            key={todoList.id}
-                            todoListId={todoList.id}
-                            title={todoList.title}
-                            tasks={tasksForTodoList}
-                            removeTask={removeTask}
-                            changeTaskIsDone={changeTaskIsDone}
-                            addNewTask={addNewTask}
-                            filter={todoList.filter}
-                            changeFilter={changeFilterHandler}
-                            onRemoveTodoList={onRemoveTodoListHandler}
-                        />)
-                })
-                : <span>Create your 1st todo list</span>
+                ? todoLists.map(todoList =>
+                    <TodoListContainer
+                        key={todoList.id}
+                        todoList={todoList}
+                        tasks={allTasks[todoList.id]}
+                        removeTask={removeTask}
+                        changeTaskIsDone={changeTaskIsDone}
+                        addNewTask={addNewTask}
+                        changeFilter={changeFilter}
+                        onRemoveTodoList={onRemoveTodoList}
+                    />)
+                :
+                <span>Create your 1st todo list</span>
             }
         </div>
     );
