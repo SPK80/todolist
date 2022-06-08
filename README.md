@@ -4,13 +4,7 @@ This is my education project in [IT-Incubator](https://it-incubator.ru/ru/)
 
 Flew! 🚀
 
-<div>
-    <a href="https://reactjs.org/">
-        <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg"
-            title="React" alt="React"
-            width="20" height="20"
-        />
-    </a>&nbsp;
+<div>    
     <a href="https://reactjs.org/">
         <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg"
             title="React" alt="React"
