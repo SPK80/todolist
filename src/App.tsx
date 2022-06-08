@@ -93,6 +93,7 @@ export const App = () => {
     return (
         <div className="App">
             <StringInputForm
+                label={"Title"}
                 confirm={addNewTodoList}
             />
             
