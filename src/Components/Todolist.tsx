@@ -1,5 +1,5 @@
 import React from "react";
-import {NewTaskInput} from "./NewTaskInput";
+import {StringInputForm} from "./StringInputForm";
 import {Task, TaskType} from "./Task";
 import {FiltersPanel, FilterValuesType} from "./FiltersPanel";
 
@@ -39,7 +39,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                 <button onClick={() => props.onRemoveTodoList(props.todoListId)}>X</button>
                 {props.title}
             </h3>
-            <NewTaskInput addNewTask={addNewTaskHandler}/>
+            <StringInputForm confirm={addNewTaskHandler}/>
             
             <FiltersPanel
                 filterValue={props.filter}

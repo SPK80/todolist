@@ -1,33 +1,32 @@
 import React, {useRef, KeyboardEvent, useState} from "react";
-import s from './NewTaskInput.module.css'
+import s from './TitleInput.module.css'
 
-type NewTaskTitlePropsType = {
-    addNewTask: (newTaskTitle: string) => void
+type StringInputFormPropsType = {
+    confirm: (value: string) => void
 }
 
-export const NewTaskInput: React.FC<NewTaskTitlePropsType> = ({addNewTask}) => {
-
-    const newTaskTitleInput = useRef<HTMLInputElement>(null)
-
+export const StringInputForm: React.FC<StringInputFormPropsType> = ({confirm}) => {
+    
+    const inputRef = useRef<HTMLInputElement>(null)
     const [error, setError] = useState(false)
-
+    
     const onClickButtonHandler = () => {
-        if (newTaskTitleInput && newTaskTitleInput.current) {
-            if (newTaskTitleInput.current.value.trim() === '') setError(true)
-            addNewTask(newTaskTitleInput.current.value)
-            newTaskTitleInput.current.value = ''
+        if (inputRef?.current) {
+            if (inputRef.current.value.trim() === '') setError(true)
+            confirm(inputRef.current.value)
+            inputRef.current.value = ''
         }
     }
-
+    
     const onInputKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(false)
         if (e.key === 'Enter') onClickButtonHandler()
     }
-
+    
     return (
         <div>
             <input
-                ref={newTaskTitleInput}
+                ref={inputRef}
                 onKeyDown={onInputKeyPressHandler}
             />
             <button onClick={onClickButtonHandler}>+</button>
@@ -35,5 +34,3 @@ export const NewTaskInput: React.FC<NewTaskTitlePropsType> = ({addNewTask}) => {
         </div>
     )
 }
-
-export default NewTaskInput;
