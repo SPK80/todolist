@@ -1,4 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {TextField} from "@material-ui/core";
 
 type EditableSpanPropsType = {
     value: string
@@ -32,25 +33,27 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
         if (e.key === 'Escape') escape()
     }
     
-    const inputSize = value.toString().length
+    const error = value.trim().length < 1
     
-    return <>
+    return <span style={{display: "inline-flex", alignContent: "center"}}>
         {isEditing ?
-            <input
-                style={{border: "none", font: "inherit"}}
-                type="text"
+            <TextField
+                size={"small"}
+                variant={"standard"}
+                InputProps={{style: {font: "inherit"}}}
                 value={value}
                 autoFocus
-                size={inputSize}
+                helperText={error && "Input text required"}
+                error={error}
                 onChange={onChangeHandler}
                 onBlur={confirm}
                 onKeyDown={onKeyDownHandler}
             />
             :
             <span
-                style={{font: "inherit"}}
+                style={{font: "inherit", wordWrap: "break-word", whiteSpace: "break-spaces"}}
                 onDoubleClick={setInputMode}
             >{props.value}</span>
         }
-    </>
+    </span>
 }
