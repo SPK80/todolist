@@ -17,7 +17,7 @@ export const FiltersPanel: React.FC<FiltersPanelPropsType> = ({filterValue, togg
     
     return (
         <ButtonGroup
-            style={{marginTop: "5px"}}
+            style={{margin: "5px 0"}}
             variant={"contained"}
             size={"small"}
         >

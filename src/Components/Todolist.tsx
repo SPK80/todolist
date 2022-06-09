@@ -48,7 +48,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     
     return (
         <div>
-            <h3>
+            <h3 style={{margin: "5px 0"}}>
                 <IconButton
                     color={"secondary"}
                     size={"small"}
@@ -56,6 +56,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                 >
                     <Delete/>
                 </IconButton>
+                
                 <EditableSpan
                     value={props.title}
                     confirm={changeTodoListTitle}
@@ -73,19 +74,18 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
             
             {
                 props.tasks.length
-                    ? <div>
-                        {props.tasks.map(task => (
-                                <Task
-                                    key={task.id}
-                                    task={task}
-                                    removeTask={removeTaskHandler}
-                                    changeTaskIsDone={changeTaskIsDoneHandler}
-                                    changeTaskTitle={changeTaskTitleHandler}
-                                />
-                            )
+                    ? <>
+                        {props.tasks.map(task =>
+                            <Task
+                                key={task.id}
+                                task={task}
+                                removeTask={removeTaskHandler}
+                                changeTaskIsDone={changeTaskIsDoneHandler}
+                                changeTaskTitle={changeTaskTitleHandler}
+                            />
                         )}
-                    </div>
-                    : <span>Create your task</span>
+                    </>
+                    : <div>Create your task</div>
             }
         </div>
     )
