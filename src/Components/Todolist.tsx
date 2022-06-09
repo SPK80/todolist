@@ -73,7 +73,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
             
             {
                 props.tasks.length
-                    ? <ul>
+                    ? <div>
                         {props.tasks.map(task => (
                                 <Task
                                     key={task.id}
@@ -84,7 +84,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                                 />
                             )
                         )}
-                    </ul>
+                    </div>
                     : <span>Create your task</span>
             }
         </div>

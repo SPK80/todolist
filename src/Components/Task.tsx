@@ -40,7 +40,7 @@ export const Task: React.FC<TaskPropsType> =
         }
         
         return (
-            <li className={className}>
+            <div className={className}>
                 <Checkbox
                     checked={task.isDone}
                     color="primary"
@@ -56,6 +56,6 @@ export const Task: React.FC<TaskPropsType> =
                     value={task.title}
                     confirm={confirmHandler}
                 />
-            </li>
+            </div>
         )
     }
