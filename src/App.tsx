@@ -8,21 +8,23 @@ import {StringInputForm} from "./Components/StringInputForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 
+// reducer -> useReducer -> Redux
+
+export type TaskStateType = {
+    [id: string]: Array<TaskType>
+}
+
+
 export const App = () => {
     
     const todoList1Id = v1();
     const todoList2Id = v1();
     
-    const [todoLists, setTodoLists] = useState<Array<TodoListType>>(
-        [
+    const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
             {id: todoList1Id, title: 'What to learn', filter: 'all'},
             {id: todoList2Id, title: 'What to buy', filter: 'all'},
         ]
     )
-    
-    type TaskStateType = {
-        [id: string]: Array<TaskType>
-    }
     
     const [allTasks, setAllTasks] = useState<TaskStateType>({
         [todoList1Id]: [
