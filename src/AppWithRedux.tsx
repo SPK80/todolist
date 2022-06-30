@@ -8,8 +8,8 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from "@material-ui/icons";
 import {
     addTodoListAC,
-    ChangeTodoListFilterAC,
-    ChangeTodoListTitleAC,
+    changeTodoListFilterAC,
+    changeTodoListTitleAC,
     removeTodoListAC
 } from "./reducers/todolist-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./reducers/tasks-reducer";
@@ -19,7 +19,7 @@ import {TasksStateType} from "./App";
 
 export const AppWithRedux = () => {
     
-    const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todolists)
+    const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todoLists)
     const allTasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     
     const dispatch = useDispatch()
@@ -29,7 +29,7 @@ export const AppWithRedux = () => {
     }
     
     const changeFilter = (newFilter: FilterValuesType, todoListId: string) => {
-        dispatch(ChangeTodoListFilterAC(todoListId, newFilter))
+        dispatch(changeTodoListFilterAC(todoListId, newFilter))
     }
     
     const addNewTask = (newTaskTitle: string, todoListId: string) => {
@@ -54,7 +54,7 @@ export const AppWithRedux = () => {
     }
     
     const changeTodoListTitle = (newTitle: string, todoListId: string) => {
-        dispatch(ChangeTodoListTitleAC(todoListId, newTitle))
+        dispatch(changeTodoListTitleAC(todoListId, newTitle))
     }
     
     console.log('todolists^', todoLists)
