@@ -45,7 +45,6 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     const changeTodoListTitle = (newTitle: string) => {
         props.changeTodoListTitle(newTitle, props.todoListId)
     }
-    
     return (
         <div>
             <h3 style={{margin: "5px 0"}}>
