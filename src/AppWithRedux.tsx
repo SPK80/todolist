@@ -8,8 +8,8 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from "@material-ui/icons";
 import {
     addTodoListAC,
-    ChangeTodoListFilterAC,
-    ChangeTodoListTitleAC,
+    changeTodoListFilterAC,
+    changeTodoListTitleAC,
     removeTodoListAC
 } from "./reducers/todolist-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./reducers/tasks-reducer";
@@ -18,49 +18,49 @@ import {AppRootStateType} from "./store";
 import {TasksStateType} from "./App";
 
 export const AppWithRedux = () => {
-    
+
     const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todolists)
     const allTasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    
+
     const dispatch = useDispatch()
-    
+
     const changeTaskIsDone = (taskId: string, value: boolean, todoListId: string) => {
         dispatch(changeTaskStatusAC(taskId, value, todoListId))
     }
-    
+
     const changeFilter = (newFilter: FilterValuesType, todoListId: string) => {
-        dispatch(ChangeTodoListFilterAC(todoListId, newFilter))
+        dispatch(changeTodoListFilterAC(todoListId, newFilter))
     }
-    
+
     const addNewTask = (newTaskTitle: string, todoListId: string) => {
         dispatch(addTaskAC(newTaskTitle, todoListId))
     }
-    
+
     const removeTask = (id: string, todoListId: string) => {
         dispatch(removeTaskAC(id, todoListId))
     }
-    
+
     const removeTodoList = (todoListId: string) => {
         dispatch(removeTodoListAC(todoListId))
     }
-    
+
     const addNewTodoList = (title: string) => {
         dispatch(addTodoListAC(v1(), title))
     }
-    
+
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
-        
+
         dispatch(changeTaskTitleAC(taskId, newTitle, todoListId))
     }
-    
+
     const changeTodoListTitle = (newTitle: string, todoListId: string) => {
-        dispatch(ChangeTodoListTitleAC(todoListId, newTitle))
+        dispatch(changeTodoListTitleAC(todoListId, newTitle))
     }
-    
+
     console.log('todolists^', todoLists)
     console.log('allTasks^', allTasks)
-    
-    
+
+
     return (
         <div className="App">
             <AppBar position="static">
@@ -74,7 +74,7 @@ export const AppWithRedux = () => {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            
+
             <Container
                 fixed
                 style={{margin: "0"}}
@@ -89,7 +89,7 @@ export const AppWithRedux = () => {
                         />
                     </Paper>
                 </Grid>
-                
+
                 <Grid container spacing={3}>
                     {todoLists.length
                         ? todoLists.map(todoList =>
@@ -113,9 +113,9 @@ export const AppWithRedux = () => {
                         <span>Create your 1st todo list</span>
                     }
                 </Grid>
-            
+
             </Container>
-        
+
         </div>
     )
 }
