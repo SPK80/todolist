@@ -59,16 +59,19 @@ export const AppWithReducer = () => {
 
     const removeTask = (id: string, todoListId: string) => {
         dispatchToAllTasks(removeTaskAC(id, todoListId))
+
     }
 
     const removeTodoList = (todoListId: string) => {
-        dispatchToTodoLists(removeTodoListAC(todoListId))
+        const action = removeTodoListAC(todoListId)
+        dispatchToTodoLists(action)
+        dispatchToAllTasks(action)
     }
 
     const addNewTodoList = (title: string) => {
-        const ac = addTodoListAC(v1(), title);
-        dispatchToTodoLists(ac)
-        dispatchToAllTasks(ac)
+        const action = addTodoListAC(v1(), title);
+        dispatchToTodoLists(action)
+        dispatchToAllTasks(action)
     }
 
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
