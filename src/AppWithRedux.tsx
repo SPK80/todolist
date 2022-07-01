@@ -33,7 +33,7 @@ export const AppWithRedux = () => {
     }
     
     const addNewTask = (newTaskTitle: string, todoListId: string) => {
-        dispatch(addTaskAC(newTaskTitle, todoListId))
+        dispatch(addTaskAC(v1(), newTaskTitle, todoListId))
     }
     
     const removeTask = (id: string, todoListId: string) => {

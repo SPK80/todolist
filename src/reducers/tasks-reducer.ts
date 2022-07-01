@@ -1,11 +1,11 @@
 import {TasksStateType} from "../App";
 import {AddTodoListAT, RemoveTodoListAT} from "./todolist-reducer";
-import {v1} from "uuid";
 
 type AddNewTaskAT = ReturnType<typeof addTaskAC>
 
-export const addTaskAC = (title: string, todolistId: string) => ({
+export const addTaskAC = (newTaskId: string, title: string, todolistId: string) => ({
     type: "ADD-TASK",
+    newTaskId,
     title,
     todolistId
 }) as const
@@ -52,7 +52,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return {
                 ...state,
                 [action.todolistId]: [
-                    {id: v1(), title: action.title, isDone: false},
+                    {id: action.newTaskId, title: action.title, isDone: false},
                     ...state[action.todolistId]
                 ]
             }
