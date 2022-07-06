@@ -16,16 +16,16 @@ export type TasksStateType = {
 
 
 export const App = () => {
-    
+
     const todoList1Id = v1();
     const todoList2Id = v1();
-    
+
     const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
             {id: todoList1Id, title: 'What to learn', filter: 'all'},
             {id: todoList2Id, title: 'What to buy', filter: 'all'},
         ]
     )
-    
+
     const [allTasks, setAllTasks] = useState<TasksStateType>({
         [todoList1Id]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
@@ -38,18 +38,18 @@ export const App = () => {
             {id: v1(), title: "Milk", isDone: false},
         ],
     })
-    
+
     const changeTaskIsDone = (taskId: string, value: boolean, todoListId: string) => {
         const tasks = allTasks[todoListId]
         const updatedTasks = tasks.map(t => t.id === taskId ? {...t, isDone: value} : t)
         setAllTasks({...allTasks, [todoListId]: updatedTasks})
     }
-    
+
     const changeFilter = (newFilter: FilterValuesType, todoListId: string) => {
         const updatedTodoLists = todoLists.map(tl => tl.id === todoListId ? {...tl, filter: newFilter} : tl)
         setTodoLists([...updatedTodoLists])
     }
-    
+
     const addNewTask = (newTaskTitle: string, todoListId: string) => {
         allTasks[todoListId] = [
             {id: v1(), title: newTaskTitle, isDone: false},
@@ -57,17 +57,17 @@ export const App = () => {
         ]
         setAllTasks({...allTasks})
     }
-    
+
     const removeTask = (id: string, todoListId: string) => {
         allTasks[todoListId] = allTasks[todoListId].filter(task => task.id !== id)
         setAllTasks({...allTasks})
     }
-    
+
     const removeTodoList = (todoListId: string) => {
         setTodoLists(todoLists.filter(tl => tl.id !== todoListId))
         delete allTasks[todoListId]
     }
-    
+
     const addNewTodoList = (title: string) => {
         const newTodoListId = v1()
         const newTodoList: TodoListType = {
@@ -78,22 +78,22 @@ export const App = () => {
         setTodoLists([...todoLists, newTodoList])
         setAllTasks({...allTasks, [newTodoListId]: []})
     }
-    
+
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
-        
+
         const changedTasks = allTasks[todoListId].map((task): TaskType =>
             (task.id !== taskId) ? task : {...task, title: newTitle}
         )
         setAllTasks({...allTasks, [todoListId]: changedTasks})
     }
-    
+
     const changeTodoListTitle = (newTitle: string, todoListId: string) => {
         const changedTodoLists = todoLists.map((todoList): TodoListType =>
             (todoList.id !== todoListId) ? todoList : {...todoList, title: newTitle}
         )
         setTodoLists(changedTodoLists)
     }
-    
+
     return (
         <div className="App">
             <AppBar position="static">
@@ -107,7 +107,7 @@ export const App = () => {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            
+
             <Container
                 fixed
                 style={{margin: "0"}}
@@ -122,7 +122,7 @@ export const App = () => {
                         />
                     </Paper>
                 </Grid>
-                
+
                 <Grid container spacing={3}>
                     {todoLists.length
                         ? todoLists.map(todoList =>
@@ -130,14 +130,14 @@ export const App = () => {
                                 <Paper style={{padding: "10px"}}>
                                     <TodoListContainer
                                         todoList={todoList}
-                                        tasks={allTasks[todoList.id]}
-                                        removeTask={removeTask}
-                                        changeTaskIsDone={changeTaskIsDone}
-                                        addNewTask={addNewTask}
-                                        changeFilter={changeFilter}
-                                        onRemoveTodoList={removeTodoList}
-                                        changeTaskTitle={changeTaskTitle}
-                                        changeTodoListTitle={changeTodoListTitle}
+                                        // tasks={allTasks[todoList.id]}
+                                        // removeTask={removeTask}
+                                        // changeTaskIsDone={changeTaskIsDone}
+                                        // addNewTask={addNewTask}
+                                        // changeFilter={changeFilter}
+                                        // onRemoveTodoList={removeTodoList}
+                                        // changeTaskTitle={changeTaskTitle}
+                                        // changeTodoListTitle={changeTodoListTitle}
                                     />
                                 </Paper>
                             </Grid>
@@ -146,9 +146,9 @@ export const App = () => {
                         <span>Create your 1st todo list</span>
                     }
                 </Grid>
-            
+
             </Container>
-        
+
         </div>
     )
 }

@@ -5,57 +5,68 @@ import {FiltersPanel, FilterValuesType} from "./FiltersPanel";
 import {EditableSpan} from "./EditableSpan";
 import {IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
+import {useDispatch} from "react-redux";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../reducers/tasks-reducer";
+import {v1} from "uuid";
+import {changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC} from "../reducers/todolist-reducer";
 
 type TodolistPropsType = {
     todoListId: string
     title: string
     tasks: Array<TaskType>
     filter: FilterValuesType
-    removeTask: (id: string, todoListId: string) => void
-    changeTaskIsDone: (id: string, value: boolean, todoListId: string) => void
-    addNewTask: (newTaskTitle: string, todoListId: string) => void
-    changeFilter: (filter: FilterValuesType, todoListId: string) => void
-    onRemoveTodoList: (todoListId: string) => void
-    changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
-    changeTodoListTitle: (newTitle: string, todoListId: string) => void
 }
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
-    
-    const toggleFilterHandler = (value: FilterValuesType) => {
-        props.changeFilter(value, props.todoListId);
+
+    const dispatch = useDispatch()
+
+    const toggleFilterHandler = (newFilter: FilterValuesType) => {
+        dispatch(changeTodoListFilterAC(props.todoListId, newFilter))
+        // props.changeFilter(value, props.todoListId);
     };
-    
+
     const addNewTaskHandler = (newTaskTitle: string) => {
-        props.addNewTask(newTaskTitle, props.todoListId)
+        dispatch(addTaskAC(v1(), newTaskTitle, props.todoListId))
+        // props.addNewTask(newTaskTitle, props.todoListId)
     };
-    
+
     const removeTaskHandler = (taskId: string) => {
-        props.removeTask(taskId, props.todoListId)
+        dispatch(removeTaskAC(taskId, props.todoListId))
+        // props.removeTask(taskId, props.todoListId)
     }
-    
+
     const changeTaskIsDoneHandler = (taskId: string, value: boolean) => {
-        props.changeTaskIsDone(taskId, value, props.todoListId)
+        dispatch(changeTaskStatusAC(taskId, value, props.todoListId))
+        // props.changeTaskIsDone(taskId, value, props.todoListId)
     }
-    
+
     const changeTaskTitleHandler = (taskId: string, newTitle: string) => {
-        props.changeTaskTitle(taskId, newTitle, props.todoListId)
+        dispatch(changeTaskTitleAC(taskId, newTitle, props.todoListId))
+        // props.changeTaskTitle(taskId, newTitle, props.todoListId)
     }
-    
+
     const changeTodoListTitle = (newTitle: string) => {
-        props.changeTodoListTitle(newTitle, props.todoListId)
+        dispatch(changeTodoListTitleAC(props.todoListId, newTitle))
+        // props.changeTodoListTitle(newTitle, props.todoListId)
     }
+
+    const removeTodoList = () => {
+        dispatch(removeTodoListAC(props.todoListId))
+        // props.onRemoveTodoList(props.todoListId)
+    }
+
     return (
         <div>
             <h3 style={{margin: "5px 0"}}>
                 <IconButton
                     color={"secondary"}
                     size={"small"}
-                    onClick={() => props.onRemoveTodoList(props.todoListId)}
+                    onClick={removeTodoList}
                 >
                     <Delete/>
                 </IconButton>
-                
+
                 <EditableSpan
                     value={props.title}
                     confirm={changeTodoListTitle}
@@ -65,12 +76,12 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                 label={"Title"}
                 confirm={addNewTaskHandler}
             />
-            
+
             <FiltersPanel
                 filterValue={props.filter}
                 toggleFilter={toggleFilterHandler}
             />
-            
+
             {
                 props.tasks.length
                     ? <>
