@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import {Todolist} from "./Components/Todolist";
 import {TaskType} from "./Components/Task";
 import {FilterValuesType} from "./Components/FiltersPanel";
@@ -14,16 +14,13 @@ export type TodoListType = {
 type TodoListContainerPropsType = {
     todoList: TodoListType
 }
-export const TodoListContainer: React.FC<TodoListContainerPropsType> = (props) => {
 
+export const TodoListContainer = memo<TodoListContainerPropsType>((props) => {
+    console.log('TodoListContainer')
     let tasksForTodoList = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[props.todoList.id])
 
-    if (props.todoList.filter === 'completed') {
-        tasksForTodoList = tasksForTodoList.filter(task => task.isDone);
-    }
-    if (props.todoList.filter === 'active') {
-        tasksForTodoList = tasksForTodoList.filter(task => !task.isDone);
-    }
+    if (props.todoList.filter === 'completed') tasksForTodoList = tasksForTodoList.filter(task => task.isDone);
+    if (props.todoList.filter === 'active') tasksForTodoList = tasksForTodoList.filter(task => !task.isDone);
 
     return (
         <Todolist
@@ -32,4 +29,4 @@ export const TodoListContainer: React.FC<TodoListContainerPropsType> = (props) =
             tasks={tasksForTodoList}
             filter={props.todoList.filter}
         />)
-}
+})
