@@ -1,15 +1,14 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {Button, ButtonGroup} from "@material-ui/core";
-
-export type FilterValuesType = 'all' | 'completed' | 'active';
+import {FilterValuesType} from "../reducers/todolist-reducer";
 
 type FiltersPanelPropsType = {
     toggleFilter: (filterValue: FilterValuesType) => void
     filterValue: FilterValuesType
 }
 
-export const FiltersPanel: React.FC<FiltersPanelPropsType> = ({filterValue, toggleFilter}) => {
-    
+export const FiltersPanel: React.FC<FiltersPanelPropsType> = memo(({filterValue, toggleFilter}) => {
+    console.log('FiltersPanel')
     const toggleAllFilter = () => toggleFilter("all")
     const toggleActiveFilter = () => toggleFilter("active")
     const toggleCompletedFilter = () => toggleFilter("completed")
@@ -35,4 +34,4 @@ export const FiltersPanel: React.FC<FiltersPanelPropsType> = ({filterValue, togg
             > Completed </Button>
         </ButtonGroup>
     )
-}
+})

@@ -1,14 +1,9 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, memo} from 'react';
 import s from './Task.module.css'
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {Checkbox, IconButton} from "@material-ui/core";
-
-export type TaskType = {
-    id: string,
-    title: string,
-    isDone: boolean
-}
+import {TaskType} from "../reducers/tasks-reducer";
 
 type TaskPropsType = {
     task: TaskType
@@ -17,13 +12,14 @@ type TaskPropsType = {
     changeTaskTitle: (id: string, newTitle: string) => void
 }
 
-export const Task: React.FC<TaskPropsType> =
+export const Task: React.FC<TaskPropsType> = memo(
     ({
          task,
          removeTask,
          changeTaskIsDone,
          changeTaskTitle
      }) => {
+        console.log('Task', task.title)
         
         const onChangeNewTaskNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
             changeTaskIsDone(task.id, e.target.checked)
@@ -58,4 +54,4 @@ export const Task: React.FC<TaskPropsType> =
                 />
             </div>
         )
-    }
+    })

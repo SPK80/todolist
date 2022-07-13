@@ -1,5 +1,10 @@
-import {TodoListType} from "../TodoListContainer";
-import {FilterValuesType} from "../Components/FiltersPanel";
+export type FilterValuesType = 'all' | 'completed' | 'active';
+
+export type TodoListType = {
+    id: string
+    title: string
+    filter: FilterValuesType
+}
 
 export type RemoveTodoListAT = {
     type: "REMOVE-TODOLIST"
@@ -35,7 +40,7 @@ export const todoListsReducer = (state: Array<TodoListType> = initialState, acti
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return state.filter(tl => tl.id !== action.id)
-
+        
         case "ADD-TODOLIST":
             const newTodoList: TodoListType = {
                 id: action.todoListId,
@@ -43,13 +48,13 @@ export const todoListsReducer = (state: Array<TodoListType> = initialState, acti
                 filter: "all"
             }
             return [...state, newTodoList]
-
+        
         case "CHANGE-TODOLIST-FILTER":
             return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl)
-
+        
         case "CHANGE-TODOLIST-TITLE":
             return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
-
+        
         default:
             return state
     }

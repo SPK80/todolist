@@ -1,13 +1,11 @@
 import {v1} from "uuid";
-import {TodoListType} from "../TodoListContainer";
 import {
     addTodoListAC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC,
+    changeTodoListTitleAC, FilterValuesType,
     removeTodoListAC,
-    todoListsReducer
+    todoListsReducer, TodoListType
 } from "./todolist-reducer";
-import {FilterValuesType} from "../Components/FiltersPanel";
 
 let todolistId1: string;
 let todolistId2: string;

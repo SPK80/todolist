@@ -1,5 +1,10 @@
-import {TasksStateType} from "../App";
 import {AddTodoListAT, RemoveTodoListAT} from "./todolist-reducer";
+
+export type TaskType = {
+    id: string,
+    title: string,
+    isDone: boolean
+}
 
 type AddNewTaskAT = ReturnType<typeof addTaskAC>
 
@@ -43,6 +48,9 @@ type ActionsType = AddNewTaskAT
     | AddTodoListAT
     | RemoveTodoListAT
 
+export type TasksStateType = {
+    [id: string]: Array<TaskType>
+}
 
 const initialState: TasksStateType = {}
 
