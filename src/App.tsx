@@ -10,19 +10,17 @@ import {todoListsSelector} from "./selectors/todoListsSelector";
 import {TodoList} from "./Components/TodoList";
 import {todoListsApi} from "./api/todoListsApi";
 
-export const AppWithRedux = () => {
-    console.log('AppWithRedux')
-
+export const App = () => {
+    console.log('App')
 
     const todoLists = useSelector(todoListsSelector)
     const dispatch = useDispatch()
 
     useEffect(() => {
         todoListsApi.getTodoLists()
-            .then(data => {
-                console.log(data)
-                if (data)
-                    dispatch(setTodoListsAC(data))
+            .then(todoLists => {
+                if (todoLists)
+                    dispatch(setTodoListsAC(todoLists))
             })
     }, [])
 
