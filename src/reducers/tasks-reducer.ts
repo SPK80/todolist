@@ -41,7 +41,7 @@ export const changeTaskTitleAC = (taskId: string, title: string, todoListId: str
     todoListId
 }) as const
 
-type ActionsType = AddNewTaskAT
+export type TasksActionsType = AddNewTaskAT
     | RemoveTaskAT
     | ChangeTaskStatusAT
     | ChangeTaskTitleAT
@@ -54,7 +54,7 @@ export type TasksStateType = {
 
 const initialState: TasksStateType = {}
 
-export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
+export const tasksReducer = (state: TasksStateType = initialState, action: TasksActionsType): TasksStateType => {
     switch (action.type) {
         case "ADD-TASK":
             return {
