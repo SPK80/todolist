@@ -7,16 +7,16 @@ import {Menu} from "@material-ui/icons";
 import {addTodoListAC, setTodoListsAC} from "./reducers/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {todoListsSelector} from "./selectors/todoListsSelector";
-import {Todolist} from "./Components/Todolist";
+import {TodoList} from "./Components/TodoList";
 import {todoListsApi} from "./api/todoListsApi";
 
 export const AppWithRedux = () => {
     console.log('AppWithRedux')
-    
-    
+
+
     const todoLists = useSelector(todoListsSelector)
     const dispatch = useDispatch()
-    
+
     useEffect(() => {
         todoListsApi.getTodoLists()
             .then(data => {
@@ -25,15 +25,15 @@ export const AppWithRedux = () => {
                     dispatch(setTodoListsAC(data))
             })
     }, [])
-    
-    
+
+
     const addNewTodoList = useCallback((title: string) =>
             dispatch(addTodoListAC(v1(), title))
         , [])
-    
+
     return (
         <div className="App">
-            
+
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -45,7 +45,7 @@ export const AppWithRedux = () => {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            
+
             <Container
                 fixed
                 style={{margin: "0"}}
@@ -60,22 +60,22 @@ export const AppWithRedux = () => {
                         />
                     </Paper>
                 </Grid>
-                
+
                 <Grid container spacing={3}>
                     {todoLists.length
                         ? todoLists.map(todoList =>
                             <Grid item key={todoList.id}>
                                 <Paper style={{padding: "10px"}}>
-                                    <Todolist todoList={todoList}/>
+                                    <TodoList todoList={todoList}/>
                                 </Paper>
                             </Grid>
                         )
                         : <span>Create your 1st todo list</span>
                     }
                 </Grid>
-            
+
             </Container>
-        
+
         </div>
     )
 }
