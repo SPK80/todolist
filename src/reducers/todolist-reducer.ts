@@ -21,10 +21,9 @@ export const changeTodoListFilterAC = (id: string, filter: FilterValuesType) => 
 
 type ChangeTodoListFilterAT = ReturnType<typeof changeTodoListFilterAC>
 
-export const addTodoListAC = (id: string, title: string) => ({
+export const addTodoListAC = (todoList: TodoListType) => ({
     type: "ADD-TODOLIST",
-    title,
-    id
+    todoList,
 }) as const
 
 export type AddTodoListAT = ReturnType<typeof addTodoListAC>
@@ -59,10 +58,7 @@ export const todoListsReducer = (state: Array<DomainTodoListType> = initialState
 
         case "ADD-TODOLIST":
             const newTodoList: DomainTodoListType = {
-                id: action.id,
-                title: action.title,
-                addedDate: Date.now().toLocaleString(),
-                order: 0,
+                ...action.todoList,
                 filter: "all",
             }
             return [...state, newTodoList]

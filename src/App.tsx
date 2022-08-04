@@ -26,7 +26,10 @@ export const App = () => {
 
 
     const addNewTodoList = useCallback((title: string) =>
-            dispatch(addTodoListAC(v1(), title))
+            todoListsApi.createTodoList(title).then(data => {
+                // console.log(data)
+                dispatch(addTodoListAC(data.item))
+            })
         , [])
 
     return (
