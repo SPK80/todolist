@@ -11,7 +11,7 @@ import {
     addTodoListAC,
     removeTodoListAC,
     todoListsReducer,
-    TodoListType
+    DomainTodoListType
 } from "./todolist-reducer";
 
 let todolistId1: string;
@@ -39,10 +39,10 @@ beforeEach(() => {
 test('correct task should be removed', () => {
     const removingTaskId = "2";
     const endState = tasksReducer(startState, removeTaskAC(removingTaskId, todolistId1));
-
+    
     expect(endState[todolistId1].length).toBe(2)
     expect(endState[todolistId2].length).toBe(3)
-
+    
     expect(endState[todolistId1]).toEqual([
         {id: "1", title: "CSS", isDone: false},
         {id: "3", title: "React", isDone: false},
@@ -59,7 +59,7 @@ test('correct task should be added', () => {
     const newTaskId = "4"
     const action = addTaskAC(newTaskId, newTaskTitle, todolistId1)
     const endState = tasksReducer(startState, action)
-
+    
     expect(endState).not.toBe(startState)
     expect(endState[todolistId1].length).toBe(4)
     expect(endState[todolistId2].length).toBe(3)
@@ -69,7 +69,7 @@ test('correct task should be added', () => {
 })
 
 test('correct isDone of task should be changed', () => {
-
+    
     const changingTaskId = startState[todolistId1][0].id
     const newIsDone = !startState[todolistId1][0].isDone
     const action = changeTaskStatusAC(changingTaskId, newIsDone, todolistId1)
@@ -78,7 +78,7 @@ test('correct isDone of task should be changed', () => {
 })
 
 test('correct task should be added to correct array', () => {
-
+    
     const action = addTaskAC(v1(), "juce", todolistId2)
     const endState: TasksStateType = tasksReducer(startState, action)
     const startStateTodolistId1Length = startState[todolistId1].length
@@ -97,17 +97,17 @@ test('correct task should change its title', () => {
 
 test('ids should be equals', () => {
     const startTasksState: TasksStateType = {}
-    const startTodoListsState: Array<TodoListType> = []
+    const startTodoListsState: Array<DomainTodoListType> = []
     const newTodoListId = v1()
     const action = addTodoListAC(newTodoListId, "new todolist")
-
+    
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodoListsState = todoListsReducer(startTodoListsState, action)
-
+    
     const keys = Object.keys(endTasksState);
     const idFromTasks = keys[0];
     const idFromTodolists = endTodoListsState[0].id;
-
+    
     expect(idFromTasks).toBe(action.id);
     expect(idFromTodolists).toBe(action.id);
 });
@@ -126,18 +126,18 @@ test('delete todo list', () => {
             {id: "3", title: "tea", isDone: false}
         ]
     }
-
-    const startTodolistsState: Array<TodoListType> = [
-        {id: "todolistId1", title: "What to learn", filter: "all"},
-        {id: "todolistId2", title: "What to buy", filter: "all"}
+    
+    const startTodolistsState: Array<DomainTodoListType> = [
+        {id: "todolistId1", title: "What to learn", filter: "all", order: 0, addedDate: ''},
+        {id: "todolistId2", title: "What to buy", filter: "all", order: 0, addedDate: ''}
     ]
-
+    
     const removingTodoListId = "todolistId1"
     const action = removeTodoListAC(removingTodoListId)
-
+    
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todoListsReducer(startTodolistsState, action)
-
+    
     expect(endTasksState[removingTodoListId]).toBeUndefined()
     expect(endTodolistsState.length).toBe(1)
 });

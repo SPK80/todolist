@@ -12,13 +12,13 @@ import {
     changeTodoListFilterAC,
     changeTodoListTitleAC, FilterValuesType,
     removeTodoListAC,
-    TodoListType
+    DomainTodoListType
 } from "../reducers/todolist-reducer";
 import {tasksSelector} from "../selectors/tasksSelector";
 
 
 type TodolistPropsType = {
-    todoList: TodoListType
+    todoList: DomainTodoListType
 }
 
 export const Todolist: React.FC<TodolistPropsType> = memo(({todoList}) => {
