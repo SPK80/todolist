@@ -1,4 +1,4 @@
-import {AddTodoListAT, RemoveTodoListAT} from "./todolist-reducer";
+import {AddTodoListAT, RemoveTodoListAT, SetTodoListsAT} from "./todolist-reducer";
 
 export type TaskType = {
     id: string,
@@ -41,12 +41,14 @@ export const changeTaskTitleAC = (taskId: string, title: string, todoListId: str
     todoListId
 }) as const
 
+
 export type TasksActionsType = AddNewTaskAT
     | RemoveTaskAT
     | ChangeTaskStatusAT
     | ChangeTaskTitleAT
     | AddTodoListAT
     | RemoveTodoListAT
+    | SetTodoListsAT
 
 export type TasksStateType = {
     [id: string]: Array<TaskType>
@@ -95,6 +97,13 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
             return newState
         }
 
+        case "SET-TODOLISTS": {
+            const newState = {...state}
+            action.todoLists.forEach(tl => {
+                newState[tl.id] = []
+            })
+            return newState
+        }
 
         default:
             return state
