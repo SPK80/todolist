@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {v1} from 'uuid';
 import {AddItemForm} from "./Components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
@@ -24,10 +23,8 @@ export const App = () => {
             })
     }, [])
 
-
     const addNewTodoList = useCallback((title: string) =>
             todoListsApi.createTodoList(title).then(data => {
-                // console.log(data)
                 dispatch(addTodoListAC(data.item))
             })
         , [])

@@ -20,4 +20,11 @@ export const todoListsApi = {
         return instance.post<ResponseType<{ item: TodoListType }>>('todo-lists', {title})
             .then(parseResponse)
     },
+
+    async deleteTodoList(todolistId: string) {
+        return instance.delete<ResponseType<{ item: TodoListType }>>(`todo-lists/${todolistId}`)
+            .then(parseResponse)
+    },
+
+
 }

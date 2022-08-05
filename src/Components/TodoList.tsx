@@ -15,6 +15,7 @@ import {
     DomainTodoListType
 } from "../reducers/todolist-reducer";
 import {tasksSelector} from "../selectors/tasksSelector";
+import {todoListsApi} from "../api/todoListsApi";
 
 
 type TodolistPropsType = {
@@ -29,7 +30,6 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
 
     if (todoList.filter === 'completed') tasksForTodoList = tasksForTodoList.filter(task => task.isDone);
     if (todoList.filter === 'active') tasksForTodoList = tasksForTodoList.filter(task => !task.isDone);
-
 
     const dispatch = useDispatch()
 
@@ -55,8 +55,14 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
     const changeTodoListTitle = (newTitle: string) =>
         dispatch(changeTodoListTitleAC(todoList.id, newTitle))
 
-    const removeTodoList = () =>
-        dispatch(removeTodoListAC(todoList.id))
+    const removeTodoList = () => {
+        todoListsApi.deleteTodoList(todoList.id).then(data => {
+            console.log('deleteTodoList', data)
+            dispatch(removeTodoListAC(todoList.id))
+        }).catch(reason => {
+            console.error(reason)
+        })
+    }
 
     return (
         <div>
