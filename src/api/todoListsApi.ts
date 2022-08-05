@@ -9,22 +9,28 @@ export type TodoListType = {
 }
 
 export const todoListsApi = {
-
+    
     async getTodoLists() {
         return instance.get<Array<TodoListType>>('todo-lists')
             .then(res => res.data)
-
+        
     },
-
+    
     async createTodoList(title: string) {
         return instance.post<ResponseType<{ item: TodoListType }>>('todo-lists', {title})
             .then(parseResponse)
     },
-
+    
     async deleteTodoList(todolistId: string) {
         return instance.delete<ResponseType<{ item: TodoListType }>>(`todo-lists/${todolistId}`)
             .then(parseResponse)
     },
-
-
+    
+    async changeTodoListTitle(todolistId: string, title: string) {
+        return instance.put(`todo-lists/${todolistId}`, {title})
+            .then(parseResponse)
+        
+    },
+    
+    
 }

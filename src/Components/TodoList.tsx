@@ -23,47 +23,47 @@ type TodolistPropsType = {
 }
 
 export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
-
+    
     console.log('Todolist', todoList.title)
-
+    
     let tasksForTodoList = useSelector(tasksSelector(todoList.id))
-
+    
     if (todoList.filter === 'completed') tasksForTodoList = tasksForTodoList.filter(task => task.isDone);
     if (todoList.filter === 'active') tasksForTodoList = tasksForTodoList.filter(task => !task.isDone);
-
+    
     const dispatch = useDispatch()
-
+    
     const toggleFilterHandler = useCallback((newFilter: FilterValuesType) =>
             dispatch(changeTodoListFilterAC(todoList.id, newFilter))
         , [])
     const addNewTaskHandler = useCallback((newTaskTitle: string) =>
             dispatch(addTaskAC(v1(), newTaskTitle, todoList.id))
         , [])
-
+    
     const removeTaskHandler = useCallback((taskId: string) =>
             dispatch(removeTaskAC(taskId, todoList.id))
         , [])
-
+    
     const changeTaskIsDoneHandler = useCallback((taskId: string, value: boolean) =>
             dispatch(changeTaskStatusAC(taskId, value, todoList.id))
         , [])
-
+    
     const changeTaskTitleHandler = useCallback((taskId: string, newTitle: string) =>
             dispatch(changeTaskTitleAC(taskId, newTitle, todoList.id))
         , [])
-
-    const changeTodoListTitle = (newTitle: string) =>
-        dispatch(changeTodoListTitleAC(todoList.id, newTitle))
-
-    const removeTodoList = () => {
-        todoListsApi.deleteTodoList(todoList.id).then(data => {
-            console.log('deleteTodoList', data)
-            dispatch(removeTodoListAC(todoList.id))
-        }).catch(reason => {
-            console.error(reason)
-        })
+    
+    const changeTodoListTitle = (newTitle: string) => {
+        todoListsApi.changeTodoListTitle(todoList.id, newTitle)
+            .then(res => dispatch(changeTodoListTitleAC(todoList.id, newTitle)))
+            .catch(reason => console.log(reason))
     }
-
+    
+    const removeTodoList = () => {
+        todoListsApi.deleteTodoList(todoList.id).then(res =>
+            dispatch(removeTodoListAC(todoList.id)))
+            .catch(reason => console.log(reason))
+    }
+    
     return (
         <div>
             <h3 style={{margin: "5px 0"}}>
@@ -74,7 +74,7 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
                 >
                     <Delete/>
                 </IconButton>
-
+                
                 <EditableSpan
                     value={todoList.title}
                     confirm={changeTodoListTitle}
@@ -84,12 +84,12 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
                 label={"Title"}
                 confirm={addNewTaskHandler}
             />
-
+            
             <FiltersPanel
                 filterValue={todoList.filter}
                 toggleFilter={toggleFilterHandler}
             />
-
+            
             {
                 tasksForTodoList.length
                     ? <>
