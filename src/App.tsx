@@ -11,27 +11,36 @@ import {todoListsApi} from "./api/todoListsApi";
 
 export const App = () => {
     console.log('App')
-
+    
     const todoLists = useSelector(todoListsSelector)
     const dispatch = useDispatch()
-
+    
     useEffect(() => {
         todoListsApi.getTodoLists()
             .then(todoLists => {
-                if (todoLists)
-                    dispatch(setTodoListsAC(todoLists))
+                if (!todoLists) return
+                dispatch(setTodoListsAC(todoLists))
+                todoLists.forEach(tl => todoListsApi.getTasks(tl.id)
+                        .then(res => {
+                            debugger
+                            console.log(res)
+                        })
+                        .catch(res => console.log(res))
+                    //.then(tasks => dispatch(setTasksAC(tasks, tl.id)))
+                )
+                
             })
     }, [])
-
+    
     const addNewTodoList = useCallback((title: string) =>
             todoListsApi.createTodoList(title).then(data => {
                 dispatch(addTodoListAC(data.item))
             })
         , [])
-
+    
     return (
         <div className="App">
-
+            
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -43,7 +52,7 @@ export const App = () => {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-
+            
             <Container
                 fixed
                 style={{margin: "0"}}
@@ -58,7 +67,7 @@ export const App = () => {
                         />
                     </Paper>
                 </Grid>
-
+                
                 <Grid container spacing={3}>
                     {todoLists.length
                         ? todoLists.map(todoList =>
@@ -71,9 +80,9 @@ export const App = () => {
                         : <span>Create your 1st todo list</span>
                     }
                 </Grid>
-
+            
             </Container>
-
+        
         </div>
     )
 }
