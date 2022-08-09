@@ -1,5 +1,11 @@
 import {instance} from "./instance";
-import {parseResponse, ResponseType} from "./parseResponse";
+import {
+    checkErrorAndGetItems,
+    checkResultCodeAndGetData,
+    ResponseWithErrorType,
+    ResponseWithResultCodeType
+} from "./parseResponse";
+import {AxiosResponse} from "axios";
 
 export type TodoListType = {
     id: string,
@@ -22,11 +28,8 @@ export type TaskType = {
     addedDate: string
 }
 
-type ResponseTasksType = {
-    items: Array<TaskType>
-    totalCount: number
-    error: string
-}
+const getDataFromAxiosResponse = <DT>(res: AxiosResponse<DT>): DT =>
+    res.data
 
 export const todoListsApi = {
     
@@ -36,31 +39,36 @@ export const todoListsApi = {
     },
     
     async createTodoList(title: string) {
-        return instance.post<ResponseType<{ item: TodoListType }>>('todo-lists', {title})
-            .then(parseResponse)
+        return instance.post<ResponseWithResultCodeType<{ item: TodoListType }>>('todo-lists', {title})
+            .then(getDataFromAxiosResponse)
+            .then(checkResultCodeAndGetData)
     },
     
     async deleteTodoList(todolistId: string) {
-        return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
-            .then(parseResponse)
+        return instance.delete<ResponseWithResultCodeType>(`todo-lists/${todolistId}`)
+            .then(getDataFromAxiosResponse)
+            .then(checkResultCodeAndGetData)
     },
     
     async changeTodoListTitle(todolistId: string, title: string) {
-        return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title})
-            .then(parseResponse)
+        return instance.put<ResponseWithResultCodeType>(`todo-lists/${todolistId}`, {title})
+            .then(getDataFromAxiosResponse)
+            .then(checkResultCodeAndGetData)
     },
     
     async getTasks(todolistId: string, count?: number, page?: number) {
         // const params = {} as { count?: number, page?: number }
         // if (count) params.count = count
         // if (page) params.page = page
-        return instance.get<ResponseType<ResponseTasksType>>(`todo-lists/${todolistId}/tasks`)
-            .then(parseResponse)
+        return instance.get<ResponseWithErrorType<TaskType>>(`todo-lists/${todolistId}/tasks`)
+            .then(getDataFromAxiosResponse)
+            .then(checkErrorAndGetItems)
     },
     
     async createTask(todolistId: string, title: string) {
-        return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title})
-            .then(parseResponse)
+        return instance.post<ResponseWithResultCodeType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title})
+            .then(getDataFromAxiosResponse)
+            .then(checkResultCodeAndGetData)
     },
     
 }

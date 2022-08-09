@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {todoListsSelector} from "./selectors/todoListsSelector";
 import {TodoList} from "./Components/TodoList";
 import {todoListsApi} from "./api/todoListsApi";
+import {setTasksAC} from "./reducers/tasks-reducer";
 
 export const App = () => {
     console.log('App')
@@ -15,23 +16,23 @@ export const App = () => {
     const todoLists = useSelector(todoListsSelector)
     const dispatch = useDispatch()
     
+    //get TodoLists and Tasks
     useEffect(() => {
         todoListsApi.getTodoLists()
             .then(todoLists => {
                 if (!todoLists) return
                 dispatch(setTodoListsAC(todoLists))
                 todoLists.forEach(tl => todoListsApi.getTasks(tl.id)
-                        .then(res => {
-                            debugger
-                            console.log(res)
-                        })
-                        .catch(res => console.log(res))
-                    //.then(tasks => dispatch(setTasksAC(tasks, tl.id)))
+                    .then(res => {
+                        dispatch(setTasksAC(res.items, tl.id))
+                    })
+                    .catch(res => console.log(res))
                 )
                 
             })
     }, [])
     
+    //create TodoList
     const addNewTodoList = useCallback((title: string) =>
             todoListsApi.createTodoList(title).then(data => {
                 dispatch(addTodoListAC(data.item))

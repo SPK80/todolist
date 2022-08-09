@@ -3,7 +3,7 @@ import s from './Task.module.css'
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {Checkbox, IconButton} from "@material-ui/core";
-import {TaskType} from "../reducers/tasks-reducer";
+import {TaskType} from "../api/todoListsApi";
 
 type TaskPropsType = {
     task: TaskType
@@ -29,7 +29,7 @@ export const Task: React.FC<TaskPropsType> = memo(
             removeTask(task.id)
         }
         
-        const className = task.isDone ? s.taskIsDone : ''
+        const className = task.completed ? s.taskIsDone : ''
         
         const confirmHandler = (newTitle: string) => {
             changeTaskTitle(task.id, newTitle)
@@ -38,7 +38,7 @@ export const Task: React.FC<TaskPropsType> = memo(
         return (
             <div className={className}>
                 <Checkbox
-                    checked={task.isDone}
+                    checked={task.completed}
                     color="primary"
                     onChange={onChangeNewTaskNameHandler}
                 />

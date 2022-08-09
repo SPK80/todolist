@@ -1,5 +1,5 @@
 import {AppRootStateType} from "../store";
-import {TaskType} from "../reducers/tasks-reducer";
+import {TaskType} from "../api/todoListsApi";
 
 export const tasksSelector = (todoListId: string) =>
     (state: AppRootStateType): Array<TaskType> =>

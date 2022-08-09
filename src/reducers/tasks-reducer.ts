@@ -1,11 +1,5 @@
 import {AddTodoListAT, RemoveTodoListAT, SetTodoListsAT} from "./todolist-reducer";
 import {TaskType} from "../api/todoListsApi";
-//
-// export type TaskType = {
-//     id: string
-//     title: string
-//     isDone: boolean
-// }
 
 type AddNewTaskAT = ReturnType<typeof addTaskAC>
 
