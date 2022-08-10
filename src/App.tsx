@@ -3,12 +3,11 @@ import './App.css';
 import {AddItemForm} from "./Components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {addTodoListAC, setTodoListsAC} from "./reducers/todolist-reducer";
+import {addTodoListAC, fetchTodoListsTC} from "./reducers/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {todoListsSelector} from "./selectors/todoListsSelector";
 import {TodoList} from "./Components/TodoList";
 import {todoListsApi} from "./api/todoListsApi";
-import {setTasksAC} from "./reducers/tasks-reducer";
 
 export const App = () => {
     console.log('App')
@@ -16,20 +15,10 @@ export const App = () => {
     const todoLists = useSelector(todoListsSelector)
     const dispatch = useDispatch()
     
-    //get TodoLists and Tasks
+    //fetch TodoLists
     useEffect(() => {
-        todoListsApi.getTodoLists()
-            .then(todoLists => {
-                if (!todoLists) return
-                dispatch(setTodoListsAC(todoLists))
-                todoLists.forEach(tl => todoListsApi.getTasks(tl.id)
-                    .then(res => {
-                        dispatch(setTasksAC(res.items, tl.id))
-                    })
-                    .catch(res => console.log(res))
-                )
-                
-            })
+        const thunk = fetchTodoListsTC()
+        dispatch(thunk)
     }, [])
     
     //create TodoList
