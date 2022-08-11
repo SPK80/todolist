@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 
 const storyBookStore = legacy_createStore(rootReducer)
 
-export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) =>
+export const ReduxStoreProviderDecorator = (storyFn: () => JSX.Element) =>
     <Provider store={storyBookStore}>
         {storyFn()}
     </Provider>
