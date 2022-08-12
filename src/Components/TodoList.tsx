@@ -6,7 +6,13 @@ import {EditableSpan} from "./EditableSpan";
 import {IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, setTasksAC} from "../reducers/tasks-reducer";
+import {
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    createTaskTC,
+    fetchTasksTC,
+    removeTaskTC
+} from "../reducers/tasks-reducer";
 import {
     changeTodoListFilterAC,
     changeTodoListTitleAC,
@@ -17,64 +23,57 @@ import {
 import {tasksSelector} from "../selectors/tasksSelector";
 import {todoListsApi} from "../api/todoListsApi";
 
-
 type TodolistPropsType = {
     todoList: DomainTodoListType
 }
 
 export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
-    
+
     console.log('Todolist', todoList.title)
-    
+
     let tasksForTodoList = useSelector(tasksSelector(todoList.id))
     const dispatch = useDispatch()
-    
+
     //fetch Tasks of this TodoList
     useEffect(() => {
-        todoListsApi.getTasks(todoList.id)
-            .then(res => dispatch(setTasksAC(res.items, todoList.id)))
-            .catch(res => console.log(res))
+        dispatch(fetchTasksTC(todoList.id))
     }, [])
-    
+
     if (todoList.filter === 'completed') tasksForTodoList = tasksForTodoList.filter(task => task.completed);
     if (todoList.filter === 'active') tasksForTodoList = tasksForTodoList.filter(task => !task.completed);
-    
+
     const toggleFilterHandler = useCallback((newFilter: FilterValuesType) =>
             dispatch(changeTodoListFilterAC(todoList.id, newFilter))
         , [])
-    
+
     const addNewTaskHandler = useCallback((newTaskTitle: string) =>
-            todoListsApi.createTask(todoList.id, newTaskTitle)
-                .then(res => {
-                    dispatch(addTaskAC(res.item))
-                })
-        
+            dispatch(createTaskTC(newTaskTitle, todoList.id))
         , [])
-    
+
     const removeTaskHandler = useCallback((taskId: string) =>
-            dispatch(removeTaskAC(taskId, todoList.id))
+            dispatch(removeTaskTC(taskId, todoList.id))
         , [])
-    
+
     const changeTaskIsDoneHandler = useCallback((taskId: string, value: boolean) =>
             dispatch(changeTaskStatusAC(taskId, value, todoList.id))
         , [])
-    
+
     const changeTaskTitleHandler = useCallback((taskId: string, newTitle: string) =>
             dispatch(changeTaskTitleAC(taskId, newTitle, todoList.id))
         , [])
-    
+
     const changeTodoListTitle = (newTitle: string) => {
         todoListsApi.updateTodoListTitle(todoList.id, newTitle)
             .then(res => dispatch(changeTodoListTitleAC(todoList.id, newTitle)))
             .catch(reason => console.log(reason))
     }
-    
+
     const removeTodoList = () => {
         todoListsApi.deleteTodoList(todoList.id).then(res =>
             dispatch(removeTodoListAC(todoList.id)))
             .catch(reason => console.log(reason))
     }
-    
+
     return (
         <div>
             <h3 style={{margin: "5px 0"}}>
@@ -85,7 +84,7 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
                 >
                     <Delete/>
                 </IconButton>
-                
+
                 <EditableSpan
                     value={todoList.title}
                     confirm={changeTodoListTitle}
@@ -95,12 +94,12 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
                 label={"Title"}
                 confirm={addNewTaskHandler}
             />
-            
+
             <FiltersPanel
                 filterValue={todoList.filter}
                 toggleFilter={toggleFilterHandler}
             />
-            
+
             {
                 tasksForTodoList.length
                     ? <>

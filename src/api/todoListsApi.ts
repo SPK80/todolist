@@ -7,33 +7,11 @@ import {
 } from "./parseResponse";
 import {AxiosResponse} from "axios";
 
-export type TodoListType = {
-    id: string,
-    title: string,
-    addedDate: string,
-    order: number,
-}
-
-export type TaskType = {
-    description: string
-    title: string
-    completed: boolean
-    status: number
-    priority: number
-    startDate: string
-    deadline: string
-    id: string
-    todoListId: string
-    order: number
-    addedDate: string
-}
-
-const getDataFromAxiosResponse = <DT>(res: AxiosResponse<DT>): DT =>
-    res.data
+const getDataFromAxiosResponse = <DT>(res: AxiosResponse<DT>): DT => res.data
 
 export const todoListsApi = {
 
-    /*=============TODOLISTS==============================================================================================*/
+    //=============TODOLISTS============================================================================================
     async getTodoLists() {
         return instance.get<Array<TodoListType>>('todo-lists')
             .then(res => res.data)
@@ -58,7 +36,7 @@ export const todoListsApi = {
     },
 
 
-    /*=============TASKS==================================================================================================*/
+    //=============TASKS================================================================================================
     async getTasks(todolistId: string, count?: number, page?: number) {
         // const params = {} as { count?: number, page?: number }
         // if (count) params.count = count
@@ -74,4 +52,42 @@ export const todoListsApi = {
             .then(checkResultCodeAndGetData)
     },
 
+    async removeTask(taskId: string, todoListId: string) {
+        return instance.delete<ResponseWithResultCodeType>(`todo-lists/${todoListId}/tasks/${taskId}`)
+            .then(getDataFromAxiosResponse)
+            .then(checkResultCodeAndGetData)
+    },
+
+    async updateTask(taskId: string, todoListId: string, updatingTaskData: UpdatingTaskType) {
+        return instance.put<ResponseWithResultCodeType>(`todo-lists/${todoListId}/tasks/${taskId}`, updatingTaskData)
+            .then(getDataFromAxiosResponse)
+            .then(checkResultCodeAndGetData)
+    },
+
+}
+
+//===Types==============================================================================================================
+
+export type TodoListType = {
+    id: string,
+    title: string,
+    addedDate: string,
+    order: number,
+}
+
+export type TaskType = UpdatingTaskType & {
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+}
+
+export type UpdatingTaskType = {
+    title: string
+    description: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
 }

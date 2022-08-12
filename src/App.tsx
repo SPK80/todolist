@@ -17,8 +17,7 @@ export const App = () => {
     
     //fetch TodoLists
     useEffect(() => {
-        const thunk = fetchTodoListsTC()
-        dispatch(thunk)
+        dispatch(fetchTodoListsTC())
     }, [])
     
     //create TodoList

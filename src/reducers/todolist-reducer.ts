@@ -1,6 +1,5 @@
 import {todoListsApi, TodoListType} from "../api/todoListsApi";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "../store";
 
 export type FilterValuesType = 'all' | 'completed' | 'active';
 
@@ -46,13 +45,14 @@ export const setTodoListsAC = (todoLists: Array<TodoListType>) => ({
 export type SetTodoListsAT = ReturnType<typeof setTodoListsAC>
 
 export const fetchTodoListsTC = () =>
-    (dispatch: Dispatch<ActionType>, getState: () => AppRootStateType) => {
+    (dispatch: Dispatch<ActionType>) => {
         todoListsApi.getTodoLists()
             .then(todoLists => todoLists && dispatch(setTodoListsAC(todoLists)))
             .catch(res => console.log(res))
     }
 
-export type ActionType = RemoveTodoListAT
+export type ActionType =
+    | RemoveTodoListAT
     | AddTodoListAT
     | ChangeTodoListFilterAT
     | ChangeTodoListTitleAT
@@ -64,23 +64,23 @@ export const todoListsReducer = (state: Array<DomainTodoListType> = initialState
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return state.filter(tl => tl.id !== action.id)
-        
+
         case "ADD-TODOLIST":
             const newTodoList: DomainTodoListType = {
                 ...action.todoList,
                 filter: "all",
             }
             return [...state, newTodoList]
-        
+
         case "CHANGE-TODOLIST-FILTER":
             return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl)
-        
+
         case "CHANGE-TODOLIST-TITLE":
             return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
-        
+
         case "SET-TODOLISTS":
             return action.todoLists.map(tl => ({...tl, filter: "all"}))
-        
+
         default:
             return state
     }
