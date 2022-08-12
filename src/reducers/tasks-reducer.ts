@@ -1,6 +1,7 @@
 import {AddTodoListAT, RemoveTodoListAT, SetTodoListsAT} from "./todolist-reducer";
-import {TaskType, todoListsApi, UpdatingTaskType} from "../api/todoListsApi";
+import {TaskType, todoListsApi} from "../api/todoListsApi";
 import {Dispatch} from "redux";
+import {AppRootStateType} from "../store";
 
 //=======addTask========================================================================================================
 type AddNewTaskAT = ReturnType<typeof addTaskAC>
@@ -47,25 +48,6 @@ export const changeTaskStatusAC = (taskId: string, isDone: boolean, todoListId: 
     todoListId
 }) as const
 
-export const updateTaskTC = (taskId: string, todoListId: string, updatedTaskData: UpdatingTaskType) =>
-    (dispatch: Dispatch<TasksActionsType>) => {
-        // const task = getState().tasks[todoListId].find(t => t.id === taskId)
-        // if (!task) return
-        // const updatedTaskData: UpdatingTaskType = {
-        //     title: task.title,
-        //     description: task.description,
-        //     completed,
-        //     status: task.status,
-        //     priority: task.priority,
-        //     startDate: task.startDate,
-        //     deadline: task.deadline,
-        // }
-        todoListsApi.updateTask(taskId, todoListId, updatedTaskData)
-            .then(res => {
-                console.log('updateTask', res)
-                // dispatch(changeTaskStatusAC(taskId, completed, todoListId))
-            })
-    }
 //======================================================================================================================
 
 //=======changeTaskTitle================================================================================================
@@ -77,6 +59,15 @@ export const changeTaskTitleAC = (taskId: string, title: string, todoListId: str
     title,
     todoListId
 }) as const
+
+export const changeTaskTitleTC = (taskId: string, todoListId: string, newTitle: string) =>
+    (dispatch: Dispatch<TasksActionsType>, getState: () => AppRootStateType) => {
+        const task = getState().tasks[todoListId].find(t => t.id === taskId)
+        if (!task) return
+        console.log('Error at changing task title. Task not found', 'taskId:', taskId, 'todoListId:', todoListId);
+        todoListsApi.updateTask(taskId, todoListId, {...task, title: newTitle})
+            .then(res => dispatch(changeTaskTitleAC(taskId, newTitle, todoListId)))
+    }
 //======================================================================================================================
 
 //=======setTasks=======================================================================================================
@@ -123,20 +114,20 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
                     ...state[action.task.todoListId]
                 ]
             }
-
+        
         case "REMOVE-TASK":
             return {
                 ...state,
                 [action.todoListId]: state[action.todoListId].filter(task => task.id !== action.taskId)
             }
-
+        
         case "CHANGE-TASK-STATUS":
             return {
                 ...state,
                 [action.todoListId]: state[action.todoListId].map(t =>
                     t.id === action.taskId ? {...t, isDone: action.isDone} : t)
             }
-
+        
         case "CHANGE-TASK-TITLE":
             return {
                 ...state,
@@ -147,13 +138,13 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
             return {
                 ...state, [action.todoList.id]: []
             }
-
+        
         case "REMOVE-TODOLIST": {
             const newState = {...state}
             delete newState[action.id]
             return newState
         }
-
+        
         case "SET-TODOLISTS": {
             const newState = {...state}
             action.todoLists.forEach(tl => {
@@ -161,14 +152,14 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
             })
             return newState
         }
-
+        
         case "SET-TASKS": {
             return {
                 ...state,
                 [action.todoListId]: action.tasks
             }
         }
-
+        
         default:
             return state
     }
