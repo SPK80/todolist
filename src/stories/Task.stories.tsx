@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {ComponentStory, ComponentMeta} from '@storybook/react';
+import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
 import {Task} from "../Components/Task";
-import {TaskType} from "../api/todoListsApi";
+import {TaskStatuses, TaskType} from "../api/todoListsApi";
 
 export default {
     title: 'TodoList/Task',
@@ -13,7 +13,6 @@ const Template: ComponentStory<typeof Task> = (args) => {
     const [task, setTask] = useState<TaskType>({
         id: '1',
         title: 'JS',
-        completed: true,
         todoListId: "todolistId",
         addedDate: "",
         startDate: "",
@@ -21,12 +20,12 @@ const Template: ComponentStory<typeof Task> = (args) => {
         deadline: "",
         order: 0,
         description: "",
-        status: 0,
+        status: TaskStatuses.New,
         
     })
     
     const changeTaskIsDone = () => {
-        const changedTask = {...task, isDone: !task.completed}
+        const changedTask = {...task, isDone: !task.status}
         setTask(changedTask)
         action('changeTaskIsDone')(changedTask)
     }
@@ -40,7 +39,7 @@ const Template: ComponentStory<typeof Task> = (args) => {
         <Task
             task={task}
             changeTaskTitle={changeTaskTitle}
-            changeTaskIsDone={changeTaskIsDone}
+            changeTaskStatus={changeTaskIsDone}
             removeTask={args.removeTask}
         />
     )
