@@ -7,7 +7,7 @@ import {IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    changeTaskStatusAC,
+    changeTaskStatusTC,
     changeTaskTitleTC,
     createTaskTC,
     fetchTasksTC,
@@ -21,7 +21,7 @@ import {
     removeTodoListAC
 } from "../reducers/todolist-reducer";
 import {tasksSelector} from "../selectors/tasksSelector";
-import {todoListsApi} from "../api/todoListsApi";
+import {TaskStatuses, todoListsApi} from "../api/todoListsApi";
 
 type TodolistPropsType = {
     todoList: DomainTodoListType
@@ -39,8 +39,8 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
         dispatch(fetchTasksTC(todoList.id))
     }, [])
     
-    if (todoList.filter === 'completed') tasksForTodoList = tasksForTodoList.filter(task => task.completed);
-    if (todoList.filter === 'active') tasksForTodoList = tasksForTodoList.filter(task => !task.completed);
+    if (todoList.filter === 'completed') tasksForTodoList = tasksForTodoList.filter(task => task.status === TaskStatuses.Completed);
+    if (todoList.filter === 'active') tasksForTodoList = tasksForTodoList.filter(task => task.status !== TaskStatuses.Completed);
     
     const toggleFilterHandler = useCallback((newFilter: FilterValuesType) =>
             dispatch(changeTodoListFilterAC(todoList.id, newFilter))
@@ -54,8 +54,8 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
             dispatch(removeTaskTC(taskId, todoList.id))
         , [])
     
-    const changeTaskIsDoneHandler = useCallback((taskId: string, value: boolean) =>
-            dispatch(changeTaskStatusAC(taskId, value, todoList.id))
+    const changeTaskStatusHandler = useCallback((taskId: string, value: TaskStatuses) =>
+            dispatch(changeTaskStatusTC(taskId, value, todoList.id))
         , [])
     
     const changeTaskTitleHandler = useCallback((taskId: string, newTitle: string) => {
@@ -108,7 +108,7 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
                                 key={task.id}
                                 task={task}
                                 removeTask={removeTaskHandler}
-                                changeTaskIsDone={changeTaskIsDoneHandler}
+                                changeTaskStatus={changeTaskStatusHandler}
                                 changeTaskTitle={changeTaskTitleHandler}
                             />
                         )}

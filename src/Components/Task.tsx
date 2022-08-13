@@ -3,12 +3,12 @@ import s from './Task.module.css'
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {Checkbox, IconButton} from "@material-ui/core";
-import {TaskType} from "../api/todoListsApi";
+import {TaskStatuses, TaskType} from "../api/todoListsApi";
 
 type TaskPropsType = {
     task: TaskType
     removeTask: (id: string) => void
-    changeTaskIsDone: (id: string, value: boolean) => void
+    changeTaskStatus: (id: string, value: TaskStatuses) => void
     changeTaskTitle: (id: string, newTitle: string) => void
 }
 
@@ -16,20 +16,20 @@ export const Task: React.FC<TaskPropsType> = memo(
     ({
          task,
          removeTask,
-         changeTaskIsDone,
+         changeTaskStatus,
          changeTaskTitle
      }) => {
         console.log('Task', task.title)
         
         const onChangeNewTaskNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            changeTaskIsDone(task.id, e.target.checked)
+            changeTaskStatus(task.id, e.target.checked ? TaskStatuses.Completed : TaskStatuses.New)
         }
         
         const onDeleteTaskHandler = () => {
             removeTask(task.id)
         }
         
-        const className = task.completed ? s.taskIsDone : ''
+        const className = task.status === TaskStatuses.Completed ? s.taskIsDone : ''
         
         const confirmHandler = (newTitle: string) => {
             changeTaskTitle(task.id, newTitle)
@@ -38,7 +38,7 @@ export const Task: React.FC<TaskPropsType> = memo(
         return (
             <div className={className}>
                 <Checkbox
-                    checked={task.completed}
+                    checked={task.status === TaskStatuses.Completed}
                     color="primary"
                     onChange={onChangeNewTaskNameHandler}
                 />
