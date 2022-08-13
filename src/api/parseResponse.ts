@@ -1,12 +1,18 @@
+export enum ResultCode {
+    SUCCESSFUL = 0,
+    BAD_RESPONSE = 1,
+    BAD_CAPTCHA = 10,
+}
+
 export type ResponseWithResultCodeType<DT = {}> = {
-    resultCode: number
+    resultCode: ResultCode
     messages: string[]
     data: DT
 }
 
 export const checkResultCodeAndGetData = <DT>(res: ResponseWithResultCodeType<DT>): Promise<DT> => {
     const {data, messages, resultCode} = res
-    if (resultCode === 0) return Promise.resolve(data)
+    if (resultCode === ResultCode.SUCCESSFUL) return Promise.resolve(data)
     else return Promise.reject(messages)
 }
 
