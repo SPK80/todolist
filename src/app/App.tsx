@@ -3,16 +3,14 @@ import './App.css';
 import {AddItemForm} from "../components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {addTodoListAC, fetchTodoListsTC} from "../features/TodoListsList/todolist-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {todoListsSelector} from "../selectors/todoListsSelector";
-import {TodoList} from "../features/TodoListsList/TodoList/TodoList";
+import {addTodoListAC, fetchTodoListsTC} from "../features/TodoListsList/TodoList/todolist-reducer";
+import {useDispatch} from "react-redux";
 import {todoListsApi} from "../api/todoListsApi";
+import {TodoListsList} from "../features/TodoListsList/TodoListsList";
 
 export const App = () => {
     console.log('App')
     
-    const todoLists = useSelector(todoListsSelector)
     const dispatch = useDispatch()
     
     //fetch TodoLists
@@ -22,10 +20,9 @@ export const App = () => {
     
     //create TodoList
     const addNewTodoList = useCallback((title: string) =>
-            todoListsApi.createTodoList(title).then(data => {
-                dispatch(addTodoListAC(data.item))
-            })
-        , [])
+        todoListsApi.createTodoList(title).then(data => {
+            dispatch(addTodoListAC(data.item))
+        }), [])
     
     return (
         <div className="App">
@@ -58,16 +55,7 @@ export const App = () => {
                 </Grid>
                 
                 <Grid container spacing={3}>
-                    {todoLists.length
-                        ? todoLists.map(todoList =>
-                            <Grid item key={todoList.id}>
-                                <Paper style={{padding: "10px"}}>
-                                    <TodoList todoList={todoList}/>
-                                </Paper>
-                            </Grid>
-                        )
-                        : <span>Create your 1st todo list</span>
-                    }
+                    <TodoListsList/>
                 </Grid>
             
             </Container>
