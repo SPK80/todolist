@@ -1,7 +1,7 @@
 import {AddTodoListAT, RemoveTodoListAT, SetTodoListsAT} from "./todolist-reducer";
-import {TaskStatuses, TaskType, todoListsApi} from "../api/todoListsApi";
+import {TaskStatuses, TaskType, todoListsApi} from "../../api/todoListsApi";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "../store";
+import {AppRootStateType} from "../../app/store";
 
 //=======addTask========================================================================================================
 type AddNewTaskAT = ReturnType<typeof addTaskAC>

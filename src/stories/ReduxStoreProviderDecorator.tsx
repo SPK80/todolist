@@ -1,8 +1,8 @@
 import {Provider} from "react-redux";
 import React from "react";
 import {combineReducers, legacy_createStore} from "redux";
-import {todoListsReducer} from "../reducers/todolist-reducer";
-import {TasksActionsType, TasksStateType} from "../reducers/tasks-reducer";
+import {todoListsReducer} from "../features/TodoListsList/todolist-reducer";
+import {TasksActionsType, TasksStateType} from "../features/TodoListsList/tasks-reducer";
 
 const initialState = {
     ['1']: []
@@ -15,7 +15,7 @@ const storyTasksReducer = (state: TasksStateType = initialState, action: TasksAc
 const rootReducer = combineReducers({
     tasks: storyTasksReducer,
     todoLists: todoListsReducer
-
+    
 })
 
 const storyBookStore = legacy_createStore(rootReducer)

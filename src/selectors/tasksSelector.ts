@@ -1,4 +1,4 @@
-import {AppRootStateType} from "../store";
+import {AppRootStateType} from "../app/store";
 import {TaskType} from "../api/todoListsApi";
 
 export const tasksSelector = (todoListId: string) =>

@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {AddItemForm} from "./Components/AddItemForm";
+import {AddItemForm} from "../components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {addTodoListAC, fetchTodoListsTC} from "./reducers/todolist-reducer";
+import {addTodoListAC, fetchTodoListsTC} from "../features/TodoListsList/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {todoListsSelector} from "./selectors/todoListsSelector";
-import {TodoList} from "./Components/TodoList";
-import {todoListsApi} from "./api/todoListsApi";
+import {todoListsSelector} from "../selectors/todoListsSelector";
+import {TodoList} from "../features/TodoListsList/TodoList/TodoList";
+import {todoListsApi} from "../api/todoListsApi";
 
 export const App = () => {
     console.log('App')

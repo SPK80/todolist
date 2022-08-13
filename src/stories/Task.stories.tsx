@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
-import {Task} from "../Components/Task";
+import {Task} from "../features/TodoListsList/TodoList/Task/Task";
 import {TaskStatuses, TaskType} from "../api/todoListsApi";
 
 export default {

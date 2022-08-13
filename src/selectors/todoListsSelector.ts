@@ -1,4 +1,4 @@
-import {AppRootStateType} from "../store";
-import {DomainTodoListType} from "../reducers/todolist-reducer";
+import {AppRootStateType} from "../app/store";
+import {DomainTodoListType} from "../features/TodoListsList/todolist-reducer";
 
 export const todoListsSelector = (state: AppRootStateType): Array<DomainTodoListType> => state.todoLists
