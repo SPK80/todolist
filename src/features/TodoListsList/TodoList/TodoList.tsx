@@ -12,14 +12,14 @@ import {
     createTaskTC,
     fetchTasksTC,
     removeTaskTC,
-} from "../tasks-reducer";
+} from "./Task/tasks-reducer";
 import {
     changeTodoListFilterAC,
     changeTodoListTitleAC,
     DomainTodoListType,
     FilterValuesType,
     removeTodoListAC
-} from "../todolist-reducer";
+} from "./todolist-reducer";
 import {tasksSelector} from "../../../selectors/tasksSelector";
 import {TaskStatuses, todoListsApi} from "../../../api/todoListsApi";
 

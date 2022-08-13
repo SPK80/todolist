@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 import {Button, ButtonGroup} from "@material-ui/core";
-import {FilterValuesType} from "../features/TodoListsList/todolist-reducer";
+import {FilterValuesType} from "../features/TodoListsList/TodoList/todolist-reducer";
 
 type FiltersPanelPropsType = {
     toggleFilter: (filterValue: FilterValuesType) => void

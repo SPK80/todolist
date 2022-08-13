@@ -6,8 +6,8 @@ import {
     tasksReducer,
     TasksStateType
 } from "./tasks-reducer";
-import {addTodoListAC, DomainTodoListType, removeTodoListAC, todoListsReducer} from "./todolist-reducer";
-import {TaskPriorities, TaskStatuses, TodoListType} from "../../api/todoListsApi";
+import {addTodoListAC, DomainTodoListType, removeTodoListAC, todoListsReducer} from "../todolist-reducer";
+import {TaskPriorities, TaskStatuses, TodoListType} from "../../../../api/todoListsApi";
 
 let todolistId1: string;
 let todolistId2: string;

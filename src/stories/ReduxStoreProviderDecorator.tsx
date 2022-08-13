@@ -1,8 +1,8 @@
 import {Provider} from "react-redux";
 import React from "react";
 import {combineReducers, legacy_createStore} from "redux";
-import {todoListsReducer} from "../features/TodoListsList/todolist-reducer";
-import {TasksActionsType, TasksStateType} from "../features/TodoListsList/tasks-reducer";
+import {todoListsReducer} from "../features/TodoListsList/TodoList/todolist-reducer";
+import {TasksActionsType, TasksStateType} from "../features/TodoListsList/TodoList/Task/tasks-reducer";
 
 const initialState = {
     ['1']: []
