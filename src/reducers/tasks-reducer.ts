@@ -1,5 +1,5 @@
 import {AddTodoListAT, RemoveTodoListAT, SetTodoListsAT} from "./todolist-reducer";
-import {TaskType, todoListsApi} from "../api/todoListsApi";
+import {TaskStatuses, TaskType, todoListsApi} from "../api/todoListsApi";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../store";
 
@@ -41,13 +41,26 @@ export const removeTaskTC = (taskId: string, todoListId: string) =>
 //=======changeTaskStatus===============================================================================================
 type ChangeTaskStatusAT = ReturnType<typeof changeTaskStatusAC>
 
-export const changeTaskStatusAC = (taskId: string, isDone: boolean, todoListId: string) => ({
+export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todoListId: string) => ({
     type: "CHANGE-TASK-STATUS",
     taskId,
-    isDone,
+    status,
     todoListId
 }) as const
 
+export const changeTaskStatusTC = (taskId: string, status: TaskStatuses, todoListId: string) =>
+    (dispatch: Dispatch<TasksActionsType>, getState: () => AppRootStateType) => {
+        const task = getState().tasks[todoListId].find(t => t.id === taskId)
+        if (!task) {
+            console.log('Error at changing task status. Task not found', 'taskId:', taskId, 'todoListId:', todoListId);
+            return
+        }
+        todoListsApi.updateTask(taskId, todoListId, {
+            ...task,
+            status,
+        })
+            .then(res => dispatch(changeTaskStatusAC(taskId, status, todoListId)))
+    }
 //======================================================================================================================
 
 //=======changeTaskTitle================================================================================================
@@ -87,6 +100,7 @@ export const fetchTasksTC = (todoListId: string) =>
     }
 //======================================================================================================================
 
+//======types===========================================================================================================
 
 export type TasksActionsType =
     | AddNewTaskAT
@@ -101,6 +115,8 @@ export type TasksActionsType =
 export type TasksStateType = {
     [id: string]: Array<TaskType>
 }
+
+//======================================================================================================================
 
 const initialState: TasksStateType = {}
 
@@ -125,7 +141,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
             return {
                 ...state,
                 [action.todoListId]: state[action.todoListId].map(t =>
-                    t.id === action.taskId ? {...t, isDone: action.isDone} : t)
+                    t.id === action.taskId ? {...t, status: action.status} : t)
             }
         
         case "CHANGE-TASK-TITLE":

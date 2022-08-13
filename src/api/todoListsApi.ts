@@ -11,7 +11,8 @@ const getDataFromAxiosResponse = <DT>(res: AxiosResponse<DT>): DT => res.data
 
 export const todoListsApi = {
     
-    //=============TODOLISTS============================================================================================
+    //=============TODOLIST=============================================================================================
+    
     async getTodoLists() {
         return instance.get<Array<TodoListType>>('todo-lists')
             .then(res => res.data)
@@ -35,12 +36,9 @@ export const todoListsApi = {
             .then(checkResultCodeAndGetData)
     },
     
-    
     //=============TASKS================================================================================================
-    async getTasks(todolistId: string, count?: number, page?: number) {
-        // const params = {} as { count?: number, page?: number }
-        // if (count) params.count = count
-        // if (page) params.page = page
+    
+    async getTasks(todolistId: string) {
         return instance.get<ResponseWithErrorType<TaskType>>(`todo-lists/${todolistId}/tasks`)
             .then(getDataFromAxiosResponse)
             .then(checkErrorAndGetItems)
@@ -58,8 +56,8 @@ export const todoListsApi = {
             .then(checkResultCodeAndGetData)
     },
     
-    async updateTask(taskId: string, todoListId: string, updatingTask: TaskType) {
-        return instance.put<ResponseWithResultCodeType>(`todo-lists/${todoListId}/tasks/${taskId}`, updatingTask)
+    async updateTask(taskId: string, todoListId: string, updatingModel: UpdateDomainTaskModelType) {
+        return instance.put<ResponseWithResultCodeType>(`todo-lists/${todoListId}/tasks/${taskId}`, updatingModel)
             .then(getDataFromAxiosResponse)
             .then(checkResultCodeAndGetData)
     },
@@ -75,19 +73,39 @@ export type TodoListType = {
     order: number,
 }
 
-export type TaskType = UpdatingTaskType & {
+export type TaskType = {
+    description: string
+    title: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
     id: string
     todoListId: string
     order: number
     addedDate: string
 }
 
-export type UpdatingTaskType = {
-    title: string
-    description: string
-    completed: boolean
-    status: number
-    priority: number
-    startDate: string
-    deadline: string
+export type UpdateDomainTaskModelType = {
+    title?: string
+    description?: string
+    status?: TaskStatuses
+    priority?: TaskPriorities
+    startDate?: string
+    deadline?: string
+}
+
+export enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3
+}
+
+export enum TaskPriorities {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4
 }
