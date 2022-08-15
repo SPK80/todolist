@@ -4,12 +4,16 @@ import {AddItemForm} from "../components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {addTodoListAC, fetchTodoListsTC} from "../features/TodoListsList/TodoList/todolist-reducer";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {todoListsApi} from "../api/todoListsApi";
 import {TodoListsList} from "../features/TodoListsList/TodoListsList";
+import {requestStatusSelector} from "../selectors/requestStatusSelector";
 
 export const App = () => {
     console.log('App')
+    const requestStatus = useSelector(requestStatusSelector)
+    console.log('requestStatus', requestStatus)
+    debugger
     
     const dispatch = useDispatch()
     
@@ -37,6 +41,7 @@ export const App = () => {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                {/*{(requestStatus == RequestStatusType.idle) && <LinearProgress/>}*/}
             </AppBar>
             
             <Container
