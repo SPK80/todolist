@@ -23,7 +23,7 @@ type TodolistPropsType = {
 
 export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
 
-    console.log('Todolist', todoList.title)
+    // console.log('Todolist', todoList.title)
     let tasksForTodoList = useAppSelector(state => state.tasks[todoList.id])
 
     const dispatch = useDispatch()
@@ -59,13 +59,13 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
     const changeTodoListTitle = (newTitle: string) => {
         todoListsApi.updateTodoListTitle(todoList.id, newTitle)
             .then(res => dispatch(changeTodoListTitleAC(todoList.id, newTitle)))
-            .catch(reason => console.log(reason))
+            .catch(reason => console.error(reason))
     }
 
     const removeTodoList = () => {
         todoListsApi.deleteTodoList(todoList.id).then(res =>
             dispatch(removeTodoListAC(todoList.id)))
-            .catch(reason => console.log(reason))
+            .catch(reason => console.error(reason))
     }
 
     return (

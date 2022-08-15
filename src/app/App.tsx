@@ -23,7 +23,7 @@ import {RequestStatusType} from "./appReducer";
 export const App = () => {
     console.log('App');
     const requestStatus = useAppSelector(state => state.app.status)
-
+    console.log('requestStatus:', RequestStatusType[requestStatus])
     const dispatch = useDispatch()
 
     //fetch TodoLists

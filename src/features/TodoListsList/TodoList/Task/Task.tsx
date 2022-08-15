@@ -19,22 +19,22 @@ export const Task: React.FC<TaskPropsType> = memo(
          changeTaskStatus,
          changeTaskTitle
      }) => {
-        console.log('Task', task.title)
-        
+        // console.log('Task', task.title)
+
         const onChangeNewTaskNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
             changeTaskStatus(task.id, e.target.checked ? TaskStatuses.Completed : TaskStatuses.New)
         }
-        
+
         const onDeleteTaskHandler = () => {
             removeTask(task.id)
         }
-        
+
         const className = task.status === TaskStatuses.Completed ? s.taskIsDone : ''
-        
+
         const confirmHandler = (newTitle: string) => {
             changeTaskTitle(task.id, newTitle)
         }
-        
+
         return (
             <div className={className}>
                 <Checkbox

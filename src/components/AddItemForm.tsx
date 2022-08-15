@@ -1,4 +1,4 @@
-import React, {KeyboardEvent, useState, ChangeEvent, memo} from "react";
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import {IconButton, TextField} from "@material-ui/core";
 import {AddBox} from "@material-ui/icons";
 
@@ -9,27 +9,27 @@ type AddItemFormPropsType = {
 
 export const AddItemForm: React.FC<AddItemFormPropsType> =
     memo(({label, confirm}) => {
-        console.log('AddItemForm', label)
-        
+        // console.log('AddItemForm', label)
+
         const [value, setValue] = useState('')
         const [error, setError] = useState(false)
-        
+
         const onClickConfirmHandler = () => {
             if (value.trim() === '') setError(true)
             else confirm(value)
             setValue('')
         }
-        
+
         const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
             if (error) setError(false)
             if (e.key === 'Enter') onClickConfirmHandler()
             if (e.key === 'Escape') setValue('')
         }
-        
+
         const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             setValue(e.currentTarget.value)
         }
-        
+
         return (
             <div>
                 <TextField

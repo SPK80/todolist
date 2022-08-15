@@ -2,6 +2,7 @@ import {AddTodoListAT, RemoveTodoListAT, SetTodoListsAT} from "../todolist-reduc
 import {TaskStatuses, TaskType, todoListsApi} from "../../../../api/todoListsApi";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../../../../app/store";
+import {RequestStatusType, setAppStatusAC, SetAppStatusActionType} from "../../../../app/appReducer";
 
 //=======addTask========================================================================================================
 type AddNewTaskAT = ReturnType<typeof addTaskAC>
@@ -32,7 +33,7 @@ export const removeTaskTC = (taskId: string, todoListId: string) =>
     (dispatch: Dispatch<TasksActionsType>) => {
         todoListsApi.removeTask(taskId, todoListId)
             .then(res => {
-                console.log('removeTask', res)
+                // console.log('removeTask', res)
                 dispatch(removeTaskAC(taskId, todoListId))
             })
     }
@@ -93,10 +94,18 @@ export const setTasksAC = (tasks: Array<TaskType>, todoListId: string) => ({
 }) as const
 
 export const fetchTasksTC = (todoListId: string) =>
-    (dispatch: Dispatch<TasksActionsType>) => {
+    (dispatch: Dispatch<TasksActionsType | SetAppStatusActionType>) => {
+        dispatch(setAppStatusAC(RequestStatusType.loading))
         todoListsApi.getTasks(todoListId)
-            .then(res => dispatch(setTasksAC(res.items, todoListId)))
-            .catch(res => console.log(res))
+            .then(res => {
+                dispatch(setTasksAC(res.items, todoListId))
+                dispatch(setAppStatusAC(RequestStatusType.succeeded))
+            })
+            .catch(res => {
+                console.error(res)
+                dispatch(setAppStatusAC(RequestStatusType.failed))
+            })
+            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
     }
 //======================================================================================================================
 
@@ -130,20 +139,20 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
                     ...state[action.task.todoListId]
                 ]
             }
-        
+
         case "REMOVE-TASK":
             return {
                 ...state,
                 [action.todoListId]: state[action.todoListId].filter(task => task.id !== action.taskId)
             }
-        
+
         case "CHANGE-TASK-STATUS":
             return {
                 ...state,
                 [action.todoListId]: state[action.todoListId].map(t =>
                     t.id === action.taskId ? {...t, status: action.status} : t)
             }
-        
+
         case "CHANGE-TASK-TITLE":
             return {
                 ...state,
@@ -154,13 +163,13 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
             return {
                 ...state, [action.todoList.id]: []
             }
-        
+
         case "REMOVE-TODOLIST": {
             const newState = {...state}
             delete newState[action.id]
             return newState
         }
-        
+
         case "SET-TODOLISTS": {
             const newState = {...state}
             action.todoLists.forEach(tl => {
@@ -168,14 +177,14 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Tasks
             })
             return newState
         }
-        
+
         case "SET-TASKS": {
             return {
                 ...state,
                 [action.todoListId]: action.tasks
             }
         }
-        
+
         default:
             return state
     }

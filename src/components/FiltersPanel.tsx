@@ -8,12 +8,12 @@ type FiltersPanelPropsType = {
 }
 
 export const FiltersPanel: React.FC<FiltersPanelPropsType> = memo(({filterValue, toggleFilter}) => {
-    console.log('FiltersPanel')
+    // console.log('FiltersPanel')
     const toggleAllFilter = () => toggleFilter("all")
     const toggleActiveFilter = () => toggleFilter("active")
     const toggleCompletedFilter = () => toggleFilter("completed")
     const getColor = (filter: FilterValuesType) => filterValue === filter ? "primary" : "default"
-    
+
     return (
         <ButtonGroup
             style={{margin: "5px 0"}}
