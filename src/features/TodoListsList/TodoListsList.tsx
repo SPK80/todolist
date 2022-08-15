@@ -1,11 +1,10 @@
 import React from "react";
-import {useSelector} from "react-redux";
-import {todoListsSelector} from "../../selectors/todoListsSelector";
 import {Grid, Paper} from "@material-ui/core";
 import {TodoList} from "./TodoList/TodoList";
+import {useAppSelector} from "../../app/store";
 
 export const TodoListsList: React.FC = () => {
-    const todoLists = useSelector(todoListsSelector)
+    const todoLists = useAppSelector(state => state.todoLists)
     return (
         <>
             {

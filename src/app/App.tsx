@@ -1,36 +1,45 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {AddItemForm} from "../components/AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Paper,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {addTodoListAC, fetchTodoListsTC} from "../features/TodoListsList/TodoList/todolist-reducer";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {todoListsApi} from "../api/todoListsApi";
 import {TodoListsList} from "../features/TodoListsList/TodoListsList";
-import {requestStatusSelector} from "../selectors/requestStatusSelector";
+import {useAppSelector} from "./store";
+import {RequestStatusType} from "./appReducer";
 
 export const App = () => {
-    console.log('App')
-    const requestStatus = useSelector(requestStatusSelector)
-    console.log('requestStatus', requestStatus)
-    debugger
-    
+    console.log('App');
+    const requestStatus = useAppSelector(state => state.app.status)
+
     const dispatch = useDispatch()
-    
+
     //fetch TodoLists
     useEffect(() => {
         dispatch(fetchTodoListsTC())
     }, [])
-    
+
     //create TodoList
     const addNewTodoList = useCallback((title: string) =>
         todoListsApi.createTodoList(title).then(data => {
             dispatch(addTodoListAC(data.item))
         }), [])
-    
+
     return (
         <div className="App">
-            
+
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -41,9 +50,9 @@ export const App = () => {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
-                {/*{(requestStatus == RequestStatusType.idle) && <LinearProgress/>}*/}
+                {(requestStatus === RequestStatusType.loading) && <LinearProgress/>}
             </AppBar>
-            
+
             <Container
                 fixed
                 style={{margin: "0"}}
@@ -58,13 +67,13 @@ export const App = () => {
                         />
                     </Paper>
                 </Grid>
-                
+
                 <Grid container spacing={3}>
                     <TodoListsList/>
                 </Grid>
-            
+
             </Container>
-        
+
         </div>
     )
 }
