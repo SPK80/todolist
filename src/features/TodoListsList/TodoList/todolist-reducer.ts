@@ -1,25 +1,14 @@
 import {todoListsApi, TodoListType} from "../../../api/todoListsApi";
 import {Dispatch} from "redux";
-import {
-    RequestStatusType,
-    setAppErrorAC,
-    SetAppErrorActionType,
-    setAppStatusAC,
-    SetAppStatusActionType
-} from "../../../app/appReducer";
+import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../../../app/appReducer";
+import {AllActionsType} from "../../../app/store";
 
-export type FilterValuesType = 'all' | 'completed' | 'active';
-
-export type DomainTodoListType = TodoListType & {
-    filter: FilterValuesType
-}
+//======actions=========================================================================================================
 
 export const removeTodoListAC = (id: string) => ({
     type: "REMOVE-TODOLIST",
     id
 }) as const
-
-export type RemoveTodoListAT = ReturnType<typeof removeTodoListAC>
 
 export const changeTodoListFilterAC = (id: string, filter: FilterValuesType) => ({
     type: "CHANGE-TODOLIST-FILTER",
@@ -27,14 +16,10 @@ export const changeTodoListFilterAC = (id: string, filter: FilterValuesType) => 
     filter
 }) as const
 
-type ChangeTodoListFilterAT = ReturnType<typeof changeTodoListFilterAC>
-
 export const addTodoListAC = (todoList: TodoListType) => ({
     type: "ADD-TODOLIST",
     todoList,
 }) as const
-
-export type AddTodoListAT = ReturnType<typeof addTodoListAC>
 
 export const changeTodoListTitleAC = (id: string, title: string) => ({
     type: "CHANGE-TODOLIST-TITLE",
@@ -42,17 +27,13 @@ export const changeTodoListTitleAC = (id: string, title: string) => ({
     title
 }) as const
 
-type ChangeTodoListTitleAT = ReturnType<typeof changeTodoListTitleAC>
-
 export const setTodoListsAC = (todoLists: Array<TodoListType>) => ({
     type: "SET-TODOLISTS",
     todoLists
 }) as const
 
-export type SetTodoListsAT = ReturnType<typeof setTodoListsAC>
-
 export const fetchTodoListsTC = () =>
-    (dispatch: Dispatch<ActionsType | SetAppStatusActionType | SetAppErrorActionType>) => {
+    (dispatch: Dispatch<AllActionsType>) => {
         dispatch(setAppStatusAC(RequestStatusType.loading))
         todoListsApi.getTodoLists()
             .then(todoLists => {
@@ -65,36 +46,44 @@ export const fetchTodoListsTC = () =>
             })
     }
 
-export type ActionsType =
-    | RemoveTodoListAT
-    | AddTodoListAT
-    | ChangeTodoListFilterAT
-    | ChangeTodoListTitleAT
-    | SetTodoListsAT
+//======types===========================================================================================================
 
-const initialState: Array<DomainTodoListType> = []
+export type FilterValuesType = 'all' | 'completed' | 'active';
 
-export const todoListsReducer = (state: Array<DomainTodoListType> = initialState, action: ActionsType): Array<DomainTodoListType> => {
+export type DomainTodoListType = TodoListType & {
+    filter: FilterValuesType
+}
+
+export type TodoListsActionsType =
+    | ReturnType<typeof removeTodoListAC>
+    | ReturnType<typeof addTodoListAC>
+    | ReturnType<typeof changeTodoListFilterAC>
+    | ReturnType<typeof changeTodoListTitleAC>
+    | ReturnType<typeof setTodoListsAC>
+
+//======reducer========================================================================================================
+
+export const todoListsReducer = (state: Array<DomainTodoListType> = [], action: TodoListsActionsType): Array<DomainTodoListType> => {
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return state.filter(tl => tl.id !== action.id)
-        
+
         case "ADD-TODOLIST":
             const newTodoList: DomainTodoListType = {
                 ...action.todoList,
                 filter: "all",
             }
             return [...state, newTodoList]
-        
+
         case "CHANGE-TODOLIST-FILTER":
             return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl)
-        
+
         case "CHANGE-TODOLIST-TITLE":
             return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
-        
+
         case "SET-TODOLISTS":
             return action.todoLists.map(tl => ({...tl, filter: "all"}))
-        
+
         default:
             return state
     }
