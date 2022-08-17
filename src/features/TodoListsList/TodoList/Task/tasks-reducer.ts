@@ -14,7 +14,15 @@ export const addTaskAC = (task: TaskType) => ({
 export const createTaskTC = (newTaskTitle: string, todoListId: string) =>
     (dispatch: Dispatch<AllActionsType>) => {
         todoListsApi.createTask(todoListId, newTaskTitle)
-            .then(res => dispatch(addTaskAC(res.item)))
+            .then(res => {
+                dispatch(addTaskAC(res.item))
+                dispatch(setAppStatusAC(RequestStatusType.succeeded))
+            })
+            .catch(res => {
+                console.error(res)
+                dispatch(setAppStatusAC(RequestStatusType.failed))
+            })
+            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
     }
 
 export const removeTaskAC = (taskId: string, todolistId: string) => ({
@@ -117,20 +125,20 @@ export const tasksReducer = (state: TasksStateType = {}, action: TasksActionsTyp
                     ...state[action.task.todoListId]
                 ]
             }
-        
+
         case "REMOVE-TASK":
             return {
                 ...state,
                 [action.todoListId]: state[action.todoListId].filter(task => task.id !== action.taskId)
             }
-        
+
         case "CHANGE-TASK-STATUS":
             return {
                 ...state,
                 [action.todoListId]: state[action.todoListId].map(t =>
                     t.id === action.taskId ? {...t, status: action.status} : t)
             }
-        
+
         case "CHANGE-TASK-TITLE":
             return {
                 ...state,
@@ -141,26 +149,26 @@ export const tasksReducer = (state: TasksStateType = {}, action: TasksActionsTyp
             return {
                 ...state, [action.todoList.id]: []
             }
-        
+
         case "REMOVE-TODOLIST": {
             const newState = {...state}
             delete newState[action.id]
             return newState
         }
-        
+
         case "SET-TODOLISTS": {
             const newState = {...state}
             action.todoLists.forEach(tl => newState[tl.id] = [])
             return newState
         }
-        
+
         case "SET-TASKS": {
             return {
                 ...state,
                 [action.todoListId]: action.tasks
             }
         }
-        
+
         default:
             return state
     }
