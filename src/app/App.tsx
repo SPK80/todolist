@@ -13,9 +13,8 @@ import {
     Typography
 } from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {addTodoListAC, fetchTodoListsTC} from "../features/TodoListsList/TodoList/todolist-reducer";
+import {addTodoListTC, fetchTodoListsTC} from "../features/TodoListsList/TodoList/todolist-reducer";
 import {useDispatch} from "react-redux";
-import {todoListsApi} from "../api/todoListsApi";
 import {TodoListsList} from "../features/TodoListsList/TodoListsList";
 import {useAppSelector} from "./store";
 import {RequestStatusType} from "./appReducer";
@@ -25,21 +24,20 @@ export const App = () => {
     const requestStatus = useAppSelector(state => state.app.status)
     console.log('requestStatus:', RequestStatusType[requestStatus])
     const dispatch = useDispatch()
-
+    
     //fetch TodoLists
     useEffect(() => {
         dispatch(fetchTodoListsTC())
     }, [])
-
+    
     //create TodoList
     const addNewTodoList = useCallback((title: string) =>
-        todoListsApi.createTodoList(title).then(data => {
-            dispatch(addTodoListAC(data.item))
-        }), [])
-
+            dispatch(addTodoListTC(title))
+        , [])
+    
     return (
         <div className="App">
-
+            
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -52,7 +50,7 @@ export const App = () => {
                 </Toolbar>
                 {(requestStatus === RequestStatusType.loading) && <LinearProgress/>}
             </AppBar>
-
+            
             <Container
                 fixed
                 style={{margin: "0"}}
@@ -67,13 +65,13 @@ export const App = () => {
                         />
                     </Paper>
                 </Grid>
-
+                
                 <Grid container spacing={3}>
                     <TodoListsList/>
                 </Grid>
-
+            
             </Container>
-
+        
         </div>
     )
 }

@@ -1,8 +1,8 @@
 import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "../todolist-reducer";
 import {TaskStatuses, TaskType, todoListsApi} from "../../../../api/todoListsApi";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "../../../../app/store";
-import {RequestStatusType, setAppStatusAC, SetAppStatusActionType} from "../../../../app/appReducer";
+import {AllActionsType, AppRootStateType} from "../../../../app/store";
+import {RequestStatusType, setAppStatusAC} from "../../../../app/appReducer";
 
 //======actions=========================================================================================================
 
@@ -12,7 +12,7 @@ export const addTaskAC = (task: TaskType) => ({
 }) as const
 
 export const createTaskTC = (newTaskTitle: string, todoListId: string) =>
-    (dispatch: Dispatch<TasksActionsType>) => {
+    (dispatch: Dispatch<AllActionsType>) => {
         todoListsApi.createTask(todoListId, newTaskTitle)
             .then(res => dispatch(addTaskAC(res.item)))
     }
@@ -40,7 +40,7 @@ export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todoLis
 }) as const
 
 export const changeTaskStatusTC = (taskId: string, status: TaskStatuses, todoListId: string) =>
-    (dispatch: Dispatch<TasksActionsType>, getState: () => AppRootStateType) => {
+    (dispatch: Dispatch<AllActionsType>, getState: () => AppRootStateType) => {
         const task = getState().tasks[todoListId].find(t => t.id === taskId)
         if (!task) {
             console.log('Error at changing task status. Task not found', 'taskId:', taskId, 'todoListId:', todoListId);
@@ -61,7 +61,7 @@ export const changeTaskTitleAC = (taskId: string, title: string, todoListId: str
 }) as const
 
 export const changeTaskTitleTC = (taskId: string, todoListId: string, newTitle: string) =>
-    (dispatch: Dispatch<TasksActionsType>, getState: () => AppRootStateType) => {
+    (dispatch: Dispatch<AllActionsType>, getState: () => AppRootStateType) => {
         const task = getState().tasks[todoListId].find(t => t.id === taskId)
         if (!task) return
         console.log('Error at changing task title. Task not found', 'taskId:', taskId, 'todoListId:', todoListId);
@@ -75,20 +75,19 @@ export const setTasksAC = (tasks: Array<TaskType>, todoListId: string) => ({
     todoListId,
 }) as const
 
-export const fetchTasksTC = (todoListId: string) =>
-    (dispatch: Dispatch<TasksActionsType | SetAppStatusActionType>) => {
-        dispatch(setAppStatusAC(RequestStatusType.loading))
-        todoListsApi.getTasks(todoListId)
-            .then(res => {
-                dispatch(setTasksAC(res.items, todoListId))
-                dispatch(setAppStatusAC(RequestStatusType.succeeded))
-            })
-            .catch(res => {
-                console.error(res)
-                dispatch(setAppStatusAC(RequestStatusType.failed))
-            })
-            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
-    }
+export const fetchTasksTC = (todoListId: string) => (dispatch: Dispatch<AllActionsType>) => {
+    dispatch(setAppStatusAC(RequestStatusType.loading))
+    todoListsApi.getTasks(todoListId)
+        .then(res => {
+            dispatch(setTasksAC(res.items, todoListId))
+            dispatch(setAppStatusAC(RequestStatusType.succeeded))
+        })
+        .catch(res => {
+            console.error(res)
+            dispatch(setAppStatusAC(RequestStatusType.failed))
+        })
+        .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
+}
 
 //======types===========================================================================================================
 
@@ -118,20 +117,20 @@ export const tasksReducer = (state: TasksStateType = {}, action: TasksActionsTyp
                     ...state[action.task.todoListId]
                 ]
             }
-
+        
         case "REMOVE-TASK":
             return {
                 ...state,
                 [action.todoListId]: state[action.todoListId].filter(task => task.id !== action.taskId)
             }
-
+        
         case "CHANGE-TASK-STATUS":
             return {
                 ...state,
                 [action.todoListId]: state[action.todoListId].map(t =>
                     t.id === action.taskId ? {...t, status: action.status} : t)
             }
-
+        
         case "CHANGE-TASK-TITLE":
             return {
                 ...state,
@@ -142,26 +141,26 @@ export const tasksReducer = (state: TasksStateType = {}, action: TasksActionsTyp
             return {
                 ...state, [action.todoList.id]: []
             }
-
+        
         case "REMOVE-TODOLIST": {
             const newState = {...state}
             delete newState[action.id]
             return newState
         }
-
+        
         case "SET-TODOLISTS": {
             const newState = {...state}
             action.todoLists.forEach(tl => newState[tl.id] = [])
             return newState
         }
-
+        
         case "SET-TASKS": {
             return {
                 ...state,
                 [action.todoListId]: action.tasks
             }
         }
-
+        
         default:
             return state
     }
