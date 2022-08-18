@@ -3,6 +3,7 @@ import React from "react";
 import {combineReducers, legacy_createStore} from "redux";
 import {todoListsReducer} from "../features/TodoListsList/TodoList/todolist-reducer";
 import {TasksActionsType, TasksStateType} from "../features/TodoListsList/TodoList/Task/tasks-reducer";
+import {appReducer} from "../app/appReducer";
 
 const initialState = {
     ['1']: []
@@ -14,8 +15,8 @@ const storyTasksReducer = (state: TasksStateType = initialState, action: TasksAc
 
 const rootReducer = combineReducers({
     tasks: storyTasksReducer,
-    todoLists: todoListsReducer
-    
+    todoLists: todoListsReducer,
+    app: appReducer
 })
 
 const storyBookStore = legacy_createStore(rootReducer)
