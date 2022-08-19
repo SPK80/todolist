@@ -2,7 +2,7 @@ import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "../todolist-reduc
 import {TaskStatuses, TaskType, todoListsApi} from "../../../../api/todoListsApi";
 import {Dispatch} from "redux";
 import {AllActionsType, AppRootStateType} from "../../../../app/store";
-import {RequestStatusType, setAppStatusAC} from "../../../../app/appReducer";
+import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../../../../app/appReducer";
 
 //======actions=========================================================================================================
 
@@ -16,13 +16,12 @@ export const createTaskTC = (newTaskTitle: string, todoListId: string) =>
         todoListsApi.createTask(todoListId, newTaskTitle)
             .then(res => {
                 dispatch(addTaskAC(res.item))
-                dispatch(setAppStatusAC(RequestStatusType.succeeded))
+                dispatch(setAppStatusAC(RequestStatusType.idle))
             })
             .catch(res => {
-                console.error(res)
-                dispatch(setAppStatusAC(RequestStatusType.failed))
+                // console.error(res)
+                dispatch(setAppErrorAC(res))
             })
-            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
     }
 
 export const removeTaskAC = (taskId: string, todolistId: string) => ({
@@ -73,8 +72,13 @@ export const changeTaskTitleTC = (taskId: string, todoListId: string, newTitle: 
         const task = getState().tasks[todoListId].find(t => t.id === taskId)
         if (!task) return
         console.log('Error at changing task title. Task not found', 'taskId:', taskId, 'todoListId:', todoListId);
+        dispatch(setAppStatusAC(RequestStatusType.loading))
         todoListsApi.updateTask(taskId, todoListId, {...task, title: newTitle})
             .then(res => dispatch(changeTaskTitleAC(taskId, newTitle, todoListId)))
+            .catch(res => {
+                dispatch(setAppErrorAC(res))
+            })
+            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
     }
 
 export const setTasksAC = (tasks: Array<TaskType>, todoListId: string) => ({
@@ -88,11 +92,9 @@ export const fetchTasksTC = (todoListId: string) => (dispatch: Dispatch<AllActio
     todoListsApi.getTasks(todoListId)
         .then(res => {
             dispatch(setTasksAC(res.items, todoListId))
-            dispatch(setAppStatusAC(RequestStatusType.succeeded))
         })
         .catch(res => {
-            console.error(res)
-            dispatch(setAppStatusAC(RequestStatusType.failed))
+            dispatch(setAppErrorAC(res))
         })
         .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
 }

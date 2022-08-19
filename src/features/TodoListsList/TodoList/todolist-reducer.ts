@@ -59,11 +59,10 @@ export const fetchTodoListsTC = () =>
         todoListsApi.getTodoLists()
             .then(todoLists => {
                 todoLists && dispatch(setTodoListsAC(todoLists))
-                dispatch(setAppStatusAC(RequestStatusType.succeeded))
+                dispatch(setAppStatusAC(RequestStatusType.idle))
             })
             .catch(res => {
-                dispatch(setAppStatusAC(RequestStatusType.failed))
-                dispatch(setAppErrorAC(res)) //console.error(res)
+                dispatch(setAppErrorAC(res))
             })
     }
 
@@ -88,23 +87,23 @@ export const todoListsReducer = (state: Array<DomainTodoListType> = [], action: 
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return state.filter(tl => tl.id !== action.id)
-        
+
         case "ADD-TODOLIST":
             const newTodoList: DomainTodoListType = {
                 ...action.todoList,
                 filter: "all",
             }
             return [...state, newTodoList]
-        
+
         case "CHANGE-TODOLIST-FILTER":
             return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl)
-        
+
         case "CHANGE-TODOLIST-TITLE":
             return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
-        
+
         case "SET-TODOLISTS":
             return action.todoLists.map(tl => ({...tl, filter: "all"}))
-        
+
         default:
             return state
     }

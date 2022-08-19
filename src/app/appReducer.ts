@@ -3,8 +3,8 @@
 export enum RequestStatusType {
     idle,
     loading,
-    succeeded,
-    failed,
+    // succeeded,
+    // failed,
 }
 
 export type AppStateType = {
