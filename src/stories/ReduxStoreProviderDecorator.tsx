@@ -2,20 +2,12 @@ import {Provider} from "react-redux";
 import React from "react";
 import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import {todoListsReducer} from "../features/TodoListsList/TodoList/todolist-reducer";
-import {TasksActionsType, TasksStateType} from "../features/TodoListsList/TodoList/Task/tasks-reducer";
+import {tasksReducer} from "../features/TodoListsList/TodoList/Task/tasks-reducer";
 import {appReducer} from "../app/appReducer";
 import thunkMiddleware from "redux-thunk";
 
-const initialState = {
-    ['1']: []
-}
-
-const storyTasksReducer = (state: TasksStateType = initialState, action: TasksActionsType): TasksStateType => {
-    return state
-}
-
 const rootReducer = combineReducers({
-    tasks: storyTasksReducer,
+    tasks: tasksReducer,
     todoLists: todoListsReducer,
     app: appReducer
 })
