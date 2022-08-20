@@ -21,10 +21,7 @@ import {RequestStatusType} from "./appReducer";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
 
 export const App = () => {
-    const requestStatus = useAppSelector(state => {
-        return state.app.status
-    })
-    // console.log('requestStatus:', RequestStatusType[requestStatus])
+    const requestStatus = useAppSelector(state => state.app.status)
     const dispatch = useDispatch()
     
     //fetch TodoLists
@@ -58,6 +55,7 @@ export const App = () => {
                         <AddItemForm
                             label={"New Todo List"}
                             confirm={addNewTodoList}
+                            disabled={requestStatus === RequestStatusType.loading}
                         />
                     </Paper>
                 </Grid>

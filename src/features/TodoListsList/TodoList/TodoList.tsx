@@ -3,12 +3,12 @@ import {AddItemForm} from "../../../components/AddItemForm";
 import {Task} from "./Task/Task";
 import {FiltersPanel} from "../../../components/FiltersPanel";
 import {EditableSpan} from "../../../components/EditableSpan";
-import {IconButton} from "@material-ui/core";
+import {IconButton, LinearProgress} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
 import {changeTaskStatusTC, changeTaskTitleTC, createTaskTC, fetchTasksTC, removeTaskTC,} from "./Task/tasks-reducer";
 import {
-    DomainTodoListType,
+    TodolistDomainType,
     FilterValuesType,
     changeTodoListFilterAC,
     changeTodoListTitleTC,
@@ -16,14 +16,14 @@ import {
 } from "./todolist-reducer";
 import {TaskStatuses} from "../../../api/todoListsApi";
 import {useAppSelector} from "../../../app/store";
+import {RequestStatusType} from "../../../app/appReducer";
 
 type TodolistPropsType = {
-    todoList: DomainTodoListType
+    todoList: TodolistDomainType,
 }
 
 export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
     
-    // console.log('Todolist', todoList.title)
     let tasksForTodoList = useAppSelector(state => state.tasks[todoList.id])
     const dispatch = useDispatch()
     
@@ -65,11 +65,13 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
     
     return (
         <div>
+            {(todoList.entityStatus === RequestStatusType.loading) && <LinearProgress/>}
             <h3 style={{margin: "5px 0"}}>
                 <IconButton
                     color={"secondary"}
                     size={"small"}
                     onClick={removeTodoList}
+                    disabled={todoList.entityStatus === RequestStatusType.loading}
                 >
                     <Delete/>
                 </IconButton>
@@ -82,6 +84,7 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
             <AddItemForm
                 label={"Title"}
                 confirm={addNewTaskHandler}
+                disabled={todoList.entityStatus === RequestStatusType.loading}
             />
             
             <FiltersPanel

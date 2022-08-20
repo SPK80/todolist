@@ -5,6 +5,7 @@ type EditableSpanPropsType = {
     value: string
     confirm: (newValue: string) => void
     escape?: () => void
+    disabled?: boolean
 }
 export const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
     const [value, setValue] = useState(props.value)
@@ -15,7 +16,7 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
     }
     
     const setSpanMode = () => setIsEditing(false)
-    const setInputMode = () => setIsEditing(true)
+    const setInputMode = () => !props.disabled && setIsEditing(true)
     
     const escape = () => {
         setSpanMode()
@@ -49,8 +50,7 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
                 onBlur={confirm}
                 onKeyDown={onKeyDownHandler}
             />
-            :
-            <span
+            : <span
                 style={{font: "inherit", wordWrap: "break-word", whiteSpace: "break-spaces"}}
                 onDoubleClick={setInputMode}
             >{props.value}</span>
