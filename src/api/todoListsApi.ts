@@ -5,9 +5,10 @@ import {
     ResponseWithErrorType,
     ResponseWithResultCodeType
 } from "./parseResponse";
-import {AxiosResponse} from "axios";
+import {AxiosError, AxiosResponse} from "axios";
 
-const getDataFromAxiosResponse = <DT>(res: AxiosResponse<DT>): DT => res.data
+const getDataFromAxiosResponse = <T>(res: AxiosResponse<T>): T => res.data
+const axiosErrorToString = (res: AxiosError) => Promise.reject(res.message)
 
 export const todoListsApi = {
     
@@ -16,24 +17,28 @@ export const todoListsApi = {
     async getTodoLists() {
         return instance.get<Array<TodoListType>>('todo-lists')
             .then(res => res.data)
+            .catch(axiosErrorToString)
     },
     
     async createTodoList(title: string) {
         return instance.post<ResponseWithResultCodeType<{ item: TodoListType }>>('todo-lists', {title})
             .then(getDataFromAxiosResponse)
             .then(checkResultCodeAndGetData)
+            .catch(axiosErrorToString)
     },
     
     async deleteTodoList(todolistId: string) {
         return instance.delete<ResponseWithResultCodeType>(`todo-lists/${todolistId}`)
             .then(getDataFromAxiosResponse)
             .then(checkResultCodeAndGetData)
+            .catch(axiosErrorToString)
     },
     
     async updateTodoListTitle(todolistId: string, title: string) {
         return instance.put<ResponseWithResultCodeType>(`todo-lists/${todolistId}`, {title})
             .then(getDataFromAxiosResponse)
             .then(checkResultCodeAndGetData)
+            .catch(axiosErrorToString)
     },
     
     //=============TASKS================================================================================================
@@ -42,24 +47,28 @@ export const todoListsApi = {
         return instance.get<ResponseWithErrorType<TaskType>>(`todo-lists/${todolistId}/tasks`)
             .then(getDataFromAxiosResponse)
             .then(checkErrorAndGetItems)
+            .catch(axiosErrorToString)
     },
     
     async createTask(todolistId: string, title: string) {
         return instance.post<ResponseWithResultCodeType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title})
             .then(getDataFromAxiosResponse)
             .then(checkResultCodeAndGetData)
+            .catch(axiosErrorToString)
     },
     
     async removeTask(taskId: string, todoListId: string) {
         return instance.delete<ResponseWithResultCodeType>(`todo-lists/${todoListId}/tasks/${taskId}`)
             .then(getDataFromAxiosResponse)
             .then(checkResultCodeAndGetData)
+            .catch(axiosErrorToString)
     },
     
     async updateTask(taskId: string, todoListId: string, updatingModel: UpdateDomainTaskModelType) {
         return instance.put<ResponseWithResultCodeType>(`todo-lists/${todoListId}/tasks/${taskId}`, updatingModel)
             .then(getDataFromAxiosResponse)
             .then(checkResultCodeAndGetData)
+            .catch(axiosErrorToString)
     },
     
 }
