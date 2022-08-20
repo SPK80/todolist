@@ -18,11 +18,13 @@ import {useDispatch} from "react-redux";
 import {TodoListsList} from "../features/TodoListsList/TodoListsList";
 import {useAppSelector} from "./store";
 import {RequestStatusType} from "./appReducer";
+import {ErrorSnackbar} from "../components/ErrorSnackbar";
 
 export const App = () => {
-    console.log('App');
-    const requestStatus = useAppSelector(state => state.app.status)
-    console.log('requestStatus:', RequestStatusType[requestStatus])
+    const requestStatus = useAppSelector(state => {
+        return state.app.status
+    })
+    // console.log('requestStatus:', RequestStatusType[requestStatus])
     const dispatch = useDispatch()
     
     //fetch TodoLists
@@ -37,7 +39,6 @@ export const App = () => {
     
     return (
         <div className="App">
-            
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -49,15 +50,10 @@ export const App = () => {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
                 {(requestStatus === RequestStatusType.loading) && <LinearProgress/>}
+                <ErrorSnackbar/>
             </AppBar>
-            
-            <Container
-                fixed
-                style={{margin: "0"}}
-            >
-                <Grid container
-                      style={{margin: "20px 0 20px"}}
-                >
+            <Container fixed style={{margin: "0"}}>
+                <Grid container style={{margin: "20px 0 20px"}}>
                     <Paper style={{padding: "10px"}}>
                         <AddItemForm
                             label={"New Todo List"}
@@ -65,13 +61,10 @@ export const App = () => {
                         />
                     </Paper>
                 </Grid>
-                
                 <Grid container spacing={3}>
                     <TodoListsList/>
                 </Grid>
-            
             </Container>
-        
         </div>
     )
 }
