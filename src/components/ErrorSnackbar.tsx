@@ -11,7 +11,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export const ErrorSnackbar: React.FC = () => {
-    // const [open, setOpen] = useState(true);
     const error = useAppSelector(state => state.app.error)
     const dispatch = useDispatch()
     
@@ -26,5 +25,5 @@ export const ErrorSnackbar: React.FC = () => {
                 {error}
             </Alert>
         </Snackbar>
-    );
-};
+    )
+}

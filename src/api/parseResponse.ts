@@ -4,25 +4,25 @@ export enum ResultCode {
     BAD_CAPTCHA = 10,
 }
 
-export type ResponseWithResultCodeType<DT = {}> = {
+export type ResponseWithResultCodeType<T = {}> = {
     resultCode: ResultCode
     messages: string[]
-    data: DT
+    data: T
 }
 
-export const checkResultCodeAndGetData = <DT>(res: ResponseWithResultCodeType<DT>): Promise<DT> => {
+export const checkResultCodeAndGetData = <T>(res: ResponseWithResultCodeType<T>): Promise<T> => {
     const {data, messages, resultCode} = res
     if (resultCode === ResultCode.SUCCESSFUL) return Promise.resolve(data)
     else return Promise.reject(messages)
 }
 
-export type ResponseWithErrorType<DT> = {
+export type ResponseWithErrorType<T> = {
     totalCount: number
     error: string
-    items: Array<DT>
+    items: Array<T>
 }
 
-export const checkErrorAndGetItems = <DT>(res: ResponseWithErrorType<DT>): Promise<{ totalCount: number, items: Array<DT> }> => {
+export const checkErrorAndGetItems = <T>(res: ResponseWithErrorType<T>): Promise<{ totalCount: number, items: Array<T> }> => {
     const {totalCount, items, error} = res
     if (error) return Promise.reject(error)
     return Promise.resolve({totalCount, items})
