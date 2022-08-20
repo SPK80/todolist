@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
 import {Task} from "../features/TodoListsList/TodoList/Task/Task";
-import {TaskStatuses, TaskType} from "../api/todoListsApi";
+import {TaskStatuses} from "../api/todoListsApi";
+import {TaskDomainType} from "../features/TodoListsList/TodoList/Task/tasks-reducer";
+import {RequestStatusType} from "../app/appReducer";
 
 export default {
     title: 'TodoList/Task',
@@ -10,7 +12,7 @@ export default {
 } as ComponentMeta<typeof Task>;
 
 const Template: ComponentStory<typeof Task> = (args) => {
-    const [task, setTask] = useState<TaskType>({
+    const [task, setTask] = useState<TaskDomainType>({
         id: '1',
         title: 'JS',
         todoListId: "todolistId",
@@ -21,7 +23,7 @@ const Template: ComponentStory<typeof Task> = (args) => {
         order: 0,
         description: "",
         status: TaskStatuses.New,
-        
+        entityStatus: RequestStatusType.idle,
     })
     
     const changeTaskIsDone = () => {

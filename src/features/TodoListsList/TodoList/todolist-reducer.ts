@@ -12,18 +12,12 @@ export const removeTodoListAC = (id: string) => ({
 
 export const removeTodoListTC = (todoListId: string) =>
     (dispatch: Dispatch<AllActionsType>) => {
-        dispatch(setAppStatusAC(RequestStatusType.loading))
+        dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.loading))
         todoListsApi.deleteTodoList(todoListId)
             .then(res => dispatch(removeTodoListAC(todoListId)))
             .catch((res: string) => dispatch(setAppErrorAC(res)))
-            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
+            .finally(() => dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.idle)))
     }
-
-export const changeTodoListFilterAC = (id: string, filter: FilterValuesType) => ({
-    type: "CHANGE-TODOLIST-FILTER",
-    id,
-    filter
-}) as const
 
 export const addTodoListAC = (todoList: TodoListType) => ({
     type: "ADD-TODOLIST",
@@ -47,11 +41,11 @@ export const changeTodoListTitleAC = (id: string, title: string) => ({
 
 export const changeTodoListTitleTC = (todoListId: string, newTitle: string) =>
     (dispatch: Dispatch<AllActionsType>) => {
-        dispatch(setAppStatusAC(RequestStatusType.loading))
+        dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.loading))
         todoListsApi.updateTodoListTitle(todoListId, newTitle)
             .then(res => dispatch(changeTodoListTitleAC(todoListId, newTitle)))
             .catch(res => dispatch(setAppErrorAC(res)))
-            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
+            .finally(() => dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.idle)))
     }
 
 export const setTodoListsAC = (todoLists: Array<TodoListType>) => ({
@@ -68,12 +62,25 @@ export const fetchTodoListsTC = () =>
             .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
     }
 
+export const changeTodoListFilterAC = (id: string, filter: FilterValuesType) => ({
+    type: "CHANGE-TODOLIST-FILTER",
+    id,
+    filter
+}) as const
+
+export const changeTodolistEntityStatusAC = (id: string, entityStatus: RequestStatusType) => ({
+    type: "CHANGE-TODOLIST-ENTITY-STATUS",
+    id,
+    entityStatus
+}) as const
+
 //======types===========================================================================================================
 
 export type FilterValuesType = 'all' | 'completed' | 'active';
 
-export type DomainTodoListType = TodoListType & {
+export type TodolistDomainType = TodoListType & {
     filter: FilterValuesType
+    entityStatus: RequestStatusType
 }
 
 export type TodoListsActionsType =
@@ -82,30 +89,34 @@ export type TodoListsActionsType =
     | ReturnType<typeof changeTodoListFilterAC>
     | ReturnType<typeof changeTodoListTitleAC>
     | ReturnType<typeof setTodoListsAC>
+    | ReturnType<typeof changeTodolistEntityStatusAC>
 
 //======reducer========================================================================================================
 
-export const todoListsReducer = (state: Array<DomainTodoListType> = [], action: TodoListsActionsType): Array<DomainTodoListType> => {
+export const todoListsReducer = (state: Array<TodolistDomainType> = [], action: TodoListsActionsType): Array<TodolistDomainType> => {
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return state.filter(tl => tl.id !== action.id)
         
         case "ADD-TODOLIST":
-            const newTodoList: DomainTodoListType = {
+            const newTodoList: TodolistDomainType = {
                 ...action.todoList,
                 filter: "all",
+                entityStatus: RequestStatusType.idle
             }
             return [...state, newTodoList]
-        
-        case "CHANGE-TODOLIST-FILTER":
-            return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl)
         
         case "CHANGE-TODOLIST-TITLE":
             return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
         
         case "SET-TODOLISTS":
-            return action.todoLists.map(tl => ({...tl, filter: "all"}))
+            return action.todoLists.map(tl => ({...tl, filter: "all", entityStatus: RequestStatusType.idle}))
         
+        case "CHANGE-TODOLIST-FILTER":
+            return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl)
+        
+        case "CHANGE-TODOLIST-ENTITY-STATUS":
+            return state.map(tl => tl.id === action.id ? {...tl, entityStatus: action.entityStatus} : tl)
         default:
             return state
     }

@@ -1,8 +1,8 @@
-import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "../todolist-reducer";
+import {addTodoListAC, changeTodolistEntityStatusAC, removeTodoListAC, setTodoListsAC} from "../todolist-reducer";
 import {TaskStatuses, TaskType, todoListsApi} from "../../../../api/todoListsApi";
 import {Dispatch} from "redux";
 import {AllActionsType, AppRootStateType} from "../../../../app/store";
-import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../../../../app/appReducer";
+import {RequestStatusType, setAppErrorAC} from "../../../../app/appReducer";
 
 //======actions=========================================================================================================
 
@@ -13,14 +13,11 @@ export const addTaskAC = (task: TaskType) => ({
 
 export const createTaskTC = (newTaskTitle: string, todoListId: string) =>
     (dispatch: Dispatch<AllActionsType>) => {
-        dispatch(setAppStatusAC(RequestStatusType.loading))
+        dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.loading))
         todoListsApi.createTask(todoListId, newTaskTitle)
-            .then(res => {
-                dispatch(addTaskAC(res.item))
-                dispatch(setAppStatusAC(RequestStatusType.idle))
-            })
+            .then(res => dispatch(addTaskAC(res.item)))
             .catch(res => dispatch(setAppErrorAC(res)))
-            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
+            .finally(() => dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.idle)))
     }
 
 export const removeTaskAC = (taskId: string, todolistId: string) => ({
@@ -31,11 +28,11 @@ export const removeTaskAC = (taskId: string, todolistId: string) => ({
 
 export const removeTaskTC = (taskId: string, todoListId: string) =>
     (dispatch: Dispatch<AllActionsType>) => {
-        dispatch(setAppStatusAC(RequestStatusType.loading))
+        dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.loading))
         todoListsApi.removeTask(taskId, todoListId)
             .then(res => dispatch(removeTaskAC(taskId, todoListId)))
             .catch(res => dispatch(setAppErrorAC(res)))
-            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
+            .finally(() => dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.idle)))
     }
 
 export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todoListId: string) => ({
@@ -49,11 +46,11 @@ export const changeTaskStatusTC = (taskId: string, status: TaskStatuses, todoLis
     (dispatch: Dispatch<AllActionsType>, getState: () => AppRootStateType) => {
         const task = getState().tasks[todoListId].find(t => t.id === taskId)
         if (!task) return console.log('Error at changing task status. Task not found', 'taskId:', taskId, 'todoListId:', todoListId)
-        dispatch(setAppStatusAC(RequestStatusType.loading))
+        dispatch(changeTaskEntityStatusAC(taskId, RequestStatusType.loading, todoListId))
         todoListsApi.updateTask(taskId, todoListId, {...task, status,})
             .then(res => dispatch(changeTaskStatusAC(taskId, status, todoListId)))
             .catch(res => dispatch(setAppErrorAC(res)))
-            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
+            .finally(() => dispatch(changeTaskEntityStatusAC(taskId, RequestStatusType.idle, todoListId)))
     }
 
 export const changeTaskTitleAC = (taskId: string, title: string, todoListId: string) => ({
@@ -67,11 +64,11 @@ export const changeTaskTitleTC = (taskId: string, todoListId: string, newTitle: 
     (dispatch: Dispatch<AllActionsType>, getState: () => AppRootStateType) => {
         const task = getState().tasks[todoListId].find(t => t.id === taskId)
         if (!task) return console.log('Error at changing task status. Task not found', 'taskId:', taskId, 'todoListId:', todoListId)
-        dispatch(setAppStatusAC(RequestStatusType.loading))
+        dispatch(changeTaskEntityStatusAC(taskId, RequestStatusType.loading, todoListId))
         todoListsApi.updateTask(taskId, todoListId, {...task, title: newTitle})
             .then(res => dispatch(changeTaskTitleAC(taskId, newTitle, todoListId)))
             .catch(res => dispatch(setAppErrorAC(res)))
-            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
+            .finally(() => dispatch(changeTaskEntityStatusAC(taskId, RequestStatusType.idle, todoListId)))
     }
 
 export const setTasksAC = (tasks: Array<TaskType>, todoListId: string) => ({
@@ -81,12 +78,20 @@ export const setTasksAC = (tasks: Array<TaskType>, todoListId: string) => ({
 }) as const
 
 export const fetchTasksTC = (todoListId: string) => (dispatch: Dispatch<AllActionsType>) => {
-    dispatch(setAppStatusAC(RequestStatusType.loading))
+    dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.loading))
     todoListsApi.getTasks(todoListId)
         .then(res => dispatch(setTasksAC(res.items, todoListId)))
         .catch(res => dispatch(setAppErrorAC(res)))
-        .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
+        .finally(() => dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.idle)))
 }
+
+export const changeTaskEntityStatusAC = (taskId: string, entityStatus: RequestStatusType, todoListId: string) => ({
+    type: "CHANGE-TASK-ENTITY-STATUS",
+    taskId,
+    todoListId,
+    entityStatus
+}) as const
+
 
 //======types===========================================================================================================
 
@@ -99,9 +104,14 @@ export type TasksActionsType =
     | ReturnType<typeof addTodoListAC>
     | ReturnType<typeof removeTodoListAC>
     | ReturnType<typeof setTodoListsAC>
+    | ReturnType<typeof changeTaskEntityStatusAC>
+
+export type TaskDomainType = TaskType & {
+    entityStatus: RequestStatusType
+}
 
 export type TasksStateType = {
-    [id: string]: Array<TaskType>
+    [id: string]: Array<TaskDomainType>
 }
 
 //=====reducer==========================================================================================================
@@ -112,7 +122,7 @@ export const tasksReducer = (state: TasksStateType = {}, action: TasksActionsTyp
             return {
                 ...state,
                 [action.task.todoListId]: [
-                    action.task,
+                    {...action.task, entityStatus: RequestStatusType.idle},
                     ...state[action.task.todoListId]
                 ]
             }
@@ -156,9 +166,16 @@ export const tasksReducer = (state: TasksStateType = {}, action: TasksActionsTyp
         case "SET-TASKS": {
             return {
                 ...state,
-                [action.todoListId]: action.tasks
+                [action.todoListId]: action.tasks.map(t => ({...t, entityStatus: RequestStatusType.idle}))
             }
         }
+        
+        case "CHANGE-TASK-ENTITY-STATUS":
+            return {
+                ...state,
+                [action.todoListId]: state[action.todoListId].map(t =>
+                    t.id === action.taskId ? {...t, entityStatus: action.entityStatus} : t)
+            }
         
         default:
             return state

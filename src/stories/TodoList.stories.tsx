@@ -3,6 +3,7 @@ import {ComponentMeta, ComponentStory} from '@storybook/react';
 
 import {TodoList} from "../features/TodoListsList/TodoList/TodoList";
 import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
+import {RequestStatusType} from "../app/appReducer";
 
 
 export default {
@@ -20,6 +21,7 @@ TodoListStory.args = {
         filter: "all",
         id: '1',
         addedDate: (new Date()).toLocaleString(),
-        order: 0
+        order: 0,
+        entityStatus: RequestStatusType.idle,
     }
 }

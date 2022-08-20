@@ -6,13 +6,15 @@ import {
     tasksReducer,
     TasksStateType
 } from "./tasks-reducer";
-import {addTodoListAC, DomainTodoListType, removeTodoListAC, todoListsReducer} from "../todolist-reducer";
+import {addTodoListAC, TodolistDomainType, removeTodoListAC, todoListsReducer} from "../todolist-reducer";
 import {TaskPriorities, TaskStatuses, TodoListType} from "../../../../api/todoListsApi";
+import {RequestStatusType} from "../../../../app/appReducer";
 
 let todolistId1: string;
 let todolistId2: string;
+
 let startTasksState: TasksStateType;
-let startTodolistsState: Array<DomainTodoListType>;
+let startTodoListsState: Array<TodolistDomainType>;
 
 beforeEach(() => {
     todolistId1 = 'todolistId1';
@@ -30,6 +32,7 @@ beforeEach(() => {
                 order: 0,
                 description: "",
                 status: 0,
+                entityStatus: RequestStatusType.idle,
             },
             {
                 id: "2",
@@ -42,6 +45,7 @@ beforeEach(() => {
                 order: 0,
                 description: "",
                 status: TaskStatuses.InProgress,
+                entityStatus: RequestStatusType.idle,
             },
         ],
         [todolistId2]: [
@@ -56,13 +60,28 @@ beforeEach(() => {
                 order: 0,
                 description: "",
                 status: TaskStatuses.InProgress,
+                entityStatus: RequestStatusType.idle,
             },
         ]
     }
     
-    startTodolistsState = [
-        {id: todolistId1, title: "What to learn", filter: "all", order: 0, addedDate: ''},
-        {id: todolistId2, title: "What to buy", filter: "all", order: 0, addedDate: ''}
+    startTodoListsState = [
+        {
+            id: todolistId1,
+            title: "What to learn",
+            filter: "all",
+            order: 0,
+            addedDate: '',
+            entityStatus: RequestStatusType.idle
+        },
+        {
+            id: todolistId2,
+            title: "What to buy",
+            filter: "all",
+            order: 0,
+            addedDate: '',
+            entityStatus: RequestStatusType.idle
+        },
     ]
     
 })
@@ -124,7 +143,7 @@ test('task title should be changed correctly ', () => {
 test('new TodoList should be added correctly', () => {
     
     const startTasksState: TasksStateType = {}
-    const startTodoListsState: Array<DomainTodoListType> = []
+    const startTodoListsState: Array<TodolistDomainType> = []
     const newTodoList: TodoListType = {
         id: 'newTodoListId',
         title: 'new todolist',
@@ -137,7 +156,8 @@ test('new TodoList should be added correctly', () => {
     const endTasksState = tasksReducer(startTasksState, action)
     
     expect(endTodoListsState.length).toBe(startTodoListsState.length + 1);
-    expect(endTodoListsState[startTodoListsState.length]).toEqual({...newTodoList, filter: "all"});
+    expect(endTodoListsState[startTodoListsState.length])
+        .toEqual<TodolistDomainType>({...newTodoList, filter: "all", entityStatus: RequestStatusType.idle});
     expect(endTasksState[newTodoList.id]).toEqual([]);
     
 });
@@ -148,7 +168,7 @@ test('TodoList should be removed correctly', () => {
     const action = removeTodoListAC(removingTodoListId)
     
     const endTasksState = tasksReducer(startTasksState, action)
-    const endTodoListsState = todoListsReducer(startTodolistsState, action)
+    const endTodoListsState = todoListsReducer(startTodoListsState, action)
     
     expect(endTasksState[removingTodoListId]).toBeUndefined()
     expect(endTodoListsState.length).toBe(1)
