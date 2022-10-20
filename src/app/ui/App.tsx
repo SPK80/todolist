@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {AddItemForm} from "../components/AddItemForm";
+import {AddItemForm} from "common/components/AddItemForm";
 import {
     AppBar,
     Button,
@@ -13,12 +13,12 @@ import {
     Typography
 } from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {addTodoListTC, fetchTodoListsTC} from "../features/TodoListsList/TodoList/todolist-reducer";
+import {addTodoListTC, fetchTodoListsTC} from "../features/todoLists/features/todoList/bll/todolist-reducer";
 import {useDispatch} from "react-redux";
-import {TodoListsList} from "../features/TodoListsList/TodoListsList";
-import {useAppSelector} from "./store";
-import {RequestStatusType} from "./appReducer";
-import {ErrorSnackbar} from "../components/ErrorSnackbar";
+import {TodoListsList} from "../features/todoLists";
+import {useAppSelector} from "../bll/store";
+import {RequestStatusType} from "../bll/appReducer";
+import {ErrorSnackbar} from "common/components/ErrorSnackbar";
 
 export const App = () => {
     const requestStatus = useAppSelector(state => state.app.status)
@@ -29,12 +29,13 @@ export const App = () => {
         dispatch(fetchTodoListsTC())
     }, [])
     
-    //create TodoList
+    //create todoList
     const addNewTodoList = useCallback((title: string) =>
             dispatch(addTodoListTC(title))
         , [])
     
     return (
+
         <div className="App">
             <AppBar position="static">
                 <Toolbar>

@@ -1,9 +1,9 @@
 import {Provider} from "react-redux";
 import React from "react";
 import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
-import {todoListsReducer} from "../features/TodoListsList/TodoList/todolist-reducer";
-import {tasksReducer} from "../features/TodoListsList/TodoList/Task/tasks-reducer";
-import {appReducer} from "../app/appReducer";
+import {todoListsReducer} from "../app/features/todoLists/features/todoList/bll/todolist-reducer";
+import {tasksReducer} from "../app/features/todoLists/features/todoList/features/task/bll/tasks-reducer";
+import {appReducer} from "../app/bll/appReducer";
 import thunkMiddleware from "redux-thunk";
 
 const rootReducer = combineReducers({

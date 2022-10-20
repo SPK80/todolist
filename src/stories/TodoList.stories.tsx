@@ -1,13 +1,13 @@
 import React from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 
-import {TodoList} from "../features/TodoListsList/TodoList/TodoList";
+import {TodoList} from "../app/features/todoLists/features/todoList/ui/TodoList";
 import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
-import {RequestStatusType} from "../app/appReducer";
+import {RequestStatusType} from "../app/bll/appReducer";
 
 
 export default {
-    title: 'TodoList/TodoList',
+    title: 'todoList/todoList',
     component: TodoList,
     decorators: [ReduxStoreProviderDecorator],
 } as ComponentMeta<typeof TodoList>;

@@ -1,8 +1,8 @@
-import {addTodoListAC, changeTodolistEntityStatusAC, removeTodoListAC, setTodoListsAC} from "../todolist-reducer";
-import {TaskStatuses, TaskType, todoListsApi} from "../../../../api/todoListsApi";
+import {addTodoListAC, changeTodolistEntityStatusAC, removeTodoListAC, setTodoListsAC} from "../../../bll/todolist-reducer";
+import {TaskStatuses, TaskType, todoListsApi} from "../../../../../../../../common/dal/todoListsApi";
 import {Dispatch} from "redux";
-import {AllActionsType, AppRootStateType} from "../../../../app/store";
-import {RequestStatusType, setAppErrorAC} from "../../../../app/appReducer";
+import {AllActionsType, AppRootStateType} from "../../../../../../../bll/store";
+import {RequestStatusType, setAppErrorAC} from "../../../../../../../bll/appReducer";
 
 //======actions=========================================================================================================
 
@@ -45,7 +45,7 @@ export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todoLis
 export const changeTaskStatusTC = (taskId: string, status: TaskStatuses, todoListId: string) =>
     (dispatch: Dispatch<AllActionsType>, getState: () => AppRootStateType) => {
         const task = getState().tasks[todoListId].find(t => t.id === taskId)
-        if (!task) return console.log('Error at changing task status. Task not found', 'taskId:', taskId, 'todoListId:', todoListId)
+        if (!task) return console.log('Error at changing task status. task not found', 'taskId:', taskId, 'todoListId:', todoListId)
         dispatch(changeTaskEntityStatusAC(taskId, RequestStatusType.loading, todoListId))
         todoListsApi.updateTask(taskId, todoListId, {...task, status,})
             .then(res => dispatch(changeTaskStatusAC(taskId, status, todoListId)))
@@ -63,7 +63,7 @@ export const changeTaskTitleAC = (taskId: string, title: string, todoListId: str
 export const changeTaskTitleTC = (taskId: string, todoListId: string, newTitle: string) =>
     (dispatch: Dispatch<AllActionsType>, getState: () => AppRootStateType) => {
         const task = getState().tasks[todoListId].find(t => t.id === taskId)
-        if (!task) return console.log('Error at changing task status. Task not found', 'taskId:', taskId, 'todoListId:', todoListId)
+        if (!task) return console.log('Error at changing task status. task not found', 'taskId:', taskId, 'todoListId:', todoListId)
         dispatch(changeTaskEntityStatusAC(taskId, RequestStatusType.loading, todoListId))
         todoListsApi.updateTask(taskId, todoListId, {...task, title: newTitle})
             .then(res => dispatch(changeTaskTitleAC(taskId, newTitle, todoListId)))

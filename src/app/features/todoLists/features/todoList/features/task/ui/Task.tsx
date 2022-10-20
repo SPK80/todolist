@@ -1,11 +1,11 @@
 import React, {ChangeEvent, memo} from 'react';
 import s from './Task.module.css'
-import {EditableSpan} from "../../../../components/EditableSpan";
+import {EditableSpan} from "../../../../../../../../common/components/EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {Checkbox, IconButton, LinearProgress} from "@material-ui/core";
-import {TaskStatuses} from "../../../../api/todoListsApi";
-import {TaskDomainType} from "./tasks-reducer";
-import {RequestStatusType} from "../../../../app/appReducer";
+import {TaskStatuses} from "../../../../../../../../common/dal/todoListsApi";
+import {TaskDomainType} from "../bll/tasks-reducer";
+import {RequestStatusType} from "../../../../../../../bll/appReducer";
 
 type TaskPropsType = {
     task: TaskDomainType

@@ -1,7 +1,7 @@
-import {todoListsApi, TodoListType} from "../../../api/todoListsApi";
+import {todoListsApi, TodoListType} from "../../../../../../common/dal/todoListsApi";
 import {Dispatch} from "redux";
-import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../../../app/appReducer";
-import {AllActionsType} from "../../../app/store";
+import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../../../../../bll/appReducer";
+import {AllActionsType} from "../../../../../bll/store";
 
 //======actions=========================================================================================================
 

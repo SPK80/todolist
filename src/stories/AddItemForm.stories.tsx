@@ -1,11 +1,11 @@
 import React from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
 
-import {AddItemForm} from "../components/AddItemForm";
+import {AddItemForm} from "../common/components/AddItemForm";
 import {action} from "@storybook/addon-actions";
 
 export default {
-    title: 'TodoList/AddItemForm',
+    title: 'todoList/AddItemForm',
     component: AddItemForm,
 } as ComponentMeta<typeof AddItemForm>;
 

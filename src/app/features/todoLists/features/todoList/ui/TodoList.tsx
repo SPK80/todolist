@@ -1,22 +1,22 @@
 import React, {memo, useCallback, useEffect} from "react";
-import {AddItemForm} from "../../../components/AddItemForm";
-import {Task} from "./Task/Task";
-import {FiltersPanel} from "../../../components/FiltersPanel";
-import {EditableSpan} from "../../../components/EditableSpan";
+import {AddItemForm} from "../../../../../../common/components/AddItemForm";
+import {Task} from "../features/task/ui/Task";
+import {FiltersPanel} from "../../../../../../common/components/FiltersPanel";
+import {EditableSpan} from "../../../../../../common/components/EditableSpan";
 import {IconButton, LinearProgress} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
-import {changeTaskStatusTC, changeTaskTitleTC, createTaskTC, fetchTasksTC, removeTaskTC,} from "./Task/tasks-reducer";
+import {changeTaskStatusTC, changeTaskTitleTC, createTaskTC, fetchTasksTC, removeTaskTC,} from "../features/task/bll/tasks-reducer";
 import {
     TodolistDomainType,
     FilterValuesType,
     changeTodoListFilterAC,
     changeTodoListTitleTC,
     removeTodoListTC
-} from "./todolist-reducer";
-import {TaskStatuses} from "../../../api/todoListsApi";
-import {useAppSelector} from "../../../app/store";
-import {RequestStatusType} from "../../../app/appReducer";
+} from "../bll/todolist-reducer";
+import {TaskStatuses} from "../../../../../../common/dal/todoListsApi";
+import {useAppSelector} from "../../../../../bll/store";
+import {RequestStatusType} from "../../../../../bll/appReducer";
 
 type TodolistPropsType = {
     todoList: TodolistDomainType,
@@ -27,7 +27,7 @@ export const TodoList: React.FC<TodolistPropsType> = memo(({todoList}) => {
     let tasksForTodoList = useAppSelector(state => state.tasks[todoList.id])
     const dispatch = useDispatch()
     
-    //fetch Tasks of this TodoList
+    //fetch Tasks of this todoList
     useEffect(() => {
         dispatch(fetchTasksTC(todoList.id))
     }, [])

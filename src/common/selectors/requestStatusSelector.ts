@@ -1,5 +1,5 @@
-import {AppRootStateType} from "../app/store";
-import {RequestStatusType} from "../app/appReducer";
+import {AppRootStateType} from "../../app/bll/store";
+import {RequestStatusType} from "../../app/bll/appReducer";
 
 export const requestStatusSelector = () =>
     (state: AppRootStateType): RequestStatusType =>

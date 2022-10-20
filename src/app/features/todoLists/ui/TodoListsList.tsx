@@ -1,7 +1,7 @@
 import React from "react";
 import {Grid, Paper} from "@material-ui/core";
-import {TodoList} from "./TodoList/TodoList";
-import {useAppSelector} from "../../app/store";
+import {TodoList} from "../features/todoList/ui/TodoList";
+import {useAppSelector} from "../../../bll/store";
 
 export const TodoListsList: React.FC = () => {
     const todoLists = useAppSelector(state => state.todoLists)

@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
-import {AllActionsType} from "../app/store";
-import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../app/appReducer";
+import {AllActionsType} from "../app/bll/store";
+import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../app/bll/appReducer";
 
 export const handleCatchAndFinally = (p: Promise<any>, dispatch: Dispatch<AllActionsType>) => {
     p

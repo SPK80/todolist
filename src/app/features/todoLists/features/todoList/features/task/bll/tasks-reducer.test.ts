@@ -6,9 +6,9 @@ import {
     tasksReducer,
     TasksStateType
 } from "./tasks-reducer";
-import {addTodoListAC, TodolistDomainType, removeTodoListAC, todoListsReducer} from "../todolist-reducer";
-import {TaskPriorities, TaskStatuses, TodoListType} from "../../../../api/todoListsApi";
-import {RequestStatusType} from "../../../../app/appReducer";
+import {addTodoListAC, TodolistDomainType, removeTodoListAC, todoListsReducer} from "../../../bll/todolist-reducer";
+import {TaskPriorities, TaskStatuses, TodoListType} from "../../../../../../../../common/dal/todoListsApi";
+import {RequestStatusType} from "../../../../../../../bll/appReducer";
 
 let todolistId1: string;
 let todolistId2: string;
@@ -140,7 +140,7 @@ test('task title should be changed correctly ', () => {
     expect(endState[todolistId2][0].title).toBe(newTitle)
 })
 
-test('new TodoList should be added correctly', () => {
+test('new todoList should be added correctly', () => {
     
     const startTasksState: TasksStateType = {}
     const startTodoListsState: Array<TodolistDomainType> = []
@@ -162,7 +162,7 @@ test('new TodoList should be added correctly', () => {
     
 });
 
-test('TodoList should be removed correctly', () => {
+test('todoList should be removed correctly', () => {
     
     const removingTodoListId = "todolistId1"
     const action = removeTodoListAC(removingTodoListId)

@@ -1,8 +1,8 @@
 import React from "react";
 import {useDispatch} from "react-redux";
 import {Button} from "@material-ui/core";
-import {setAppErrorAC} from "../app/appReducer";
-import {ErrorSnackbar} from "../components/ErrorSnackbar";
+import {setAppErrorAC} from "../app/bll/appReducer";
+import {ErrorSnackbar} from "../common/components/ErrorSnackbar";
 
 export const ErrorSnackbarStand: React.FC = () => {
     const dispatch = useDispatch()

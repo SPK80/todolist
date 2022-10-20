@@ -1,11 +1,11 @@
 import React from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
-import {App} from "../app/App";
+import {App} from "app/ui/App";
 import {Provider} from "react-redux";
-import {store} from "../app/store";
+import {store} from "app/bll/store";
 
 export default {
-    title: 'TodoList/App',
+    title: 'todoList/App',
     component: App,
     args: {},
     argTypes: {},

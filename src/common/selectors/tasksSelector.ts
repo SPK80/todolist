@@ -1,5 +1,5 @@
-import {AppRootStateType} from "../app/store";
-import {TaskType} from "../api/todoListsApi";
+import {AppRootStateType} from "../../app/bll/store";
+import {TaskType} from "../dal/todoListsApi";
 
 export const tasksSelector = (todoListId: string) =>
     (state: AppRootStateType): Array<TaskType> =>

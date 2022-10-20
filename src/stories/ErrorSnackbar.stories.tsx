@@ -4,7 +4,7 @@ import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
 import {ErrorSnackbarStand} from "./ErrorSnackbarStand";
 
 export default {
-    title: 'TodoList/ErrorSnackbar',
+    title: 'todoList/ErrorSnackbar',
     component: ErrorSnackbarStand,
     decorators: [ReduxStoreProviderDecorator],
 } as ComponentMeta<typeof ErrorSnackbarStand>;
