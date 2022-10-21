@@ -1,4 +1,4 @@
-import {todoListsApi, TodoListType} from "../../../../../../common/dal/todoListsApi";
+import {todoListsApi, TodoListType} from "../../../dal/todoListsApi";
 import {Dispatch} from "redux";
 import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "../../../../../bll/appReducer";
 import {AllActionsType} from "../../../../../bll/store";
@@ -11,13 +11,13 @@ export const removeTodoListAC = (id: string) => ({
 }) as const
 
 export const removeTodoListTC = (todoListId: string) =>
-    (dispatch: Dispatch<AllActionsType>) => {
-        dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.loading))
-        todoListsApi.deleteTodoList(todoListId)
-            .then(res => dispatch(removeTodoListAC(todoListId)))
-            .catch((res: string) => dispatch(setAppErrorAC(res)))
-            .finally(() => dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.idle)))
-    }
+  (dispatch: Dispatch<AllActionsType>) => {
+      dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.loading))
+      todoListsApi.deleteTodoList(todoListId)
+        .then(res => dispatch(removeTodoListAC(todoListId)))
+        .catch((res: string) => dispatch(setAppErrorAC(res)))
+        .finally(() => dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.idle)))
+  }
 
 export const addTodoListAC = (todoList: TodoListType) => ({
     type: "ADD-TODOLIST",
@@ -25,13 +25,13 @@ export const addTodoListAC = (todoList: TodoListType) => ({
 }) as const
 
 export const addTodoListTC = (title: string) =>
-    (dispatch: Dispatch<AllActionsType>) => {
-        dispatch(setAppStatusAC(RequestStatusType.loading))
-        todoListsApi.createTodoList(title)
-            .then(data => dispatch(addTodoListAC(data.item)))
-            .catch(res => dispatch(setAppErrorAC(res)))
-            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
-    }
+  (dispatch: Dispatch<AllActionsType>) => {
+      dispatch(setAppStatusAC(RequestStatusType.loading))
+      todoListsApi.createTodoList(title)
+        .then(data => dispatch(addTodoListAC(data.item)))
+        .catch(res => dispatch(setAppErrorAC(res)))
+        .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
+  }
 
 export const changeTodoListTitleAC = (id: string, title: string) => ({
     type: "CHANGE-TODOLIST-TITLE",
@@ -40,13 +40,13 @@ export const changeTodoListTitleAC = (id: string, title: string) => ({
 }) as const
 
 export const changeTodoListTitleTC = (todoListId: string, newTitle: string) =>
-    (dispatch: Dispatch<AllActionsType>) => {
-        dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.loading))
-        todoListsApi.updateTodoListTitle(todoListId, newTitle)
-            .then(res => dispatch(changeTodoListTitleAC(todoListId, newTitle)))
-            .catch(res => dispatch(setAppErrorAC(res)))
-            .finally(() => dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.idle)))
-    }
+  (dispatch: Dispatch<AllActionsType>) => {
+      dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.loading))
+      todoListsApi.updateTodoListTitle(todoListId, newTitle)
+        .then(res => dispatch(changeTodoListTitleAC(todoListId, newTitle)))
+        .catch(res => dispatch(setAppErrorAC(res)))
+        .finally(() => dispatch(changeTodolistEntityStatusAC(todoListId, RequestStatusType.idle)))
+  }
 
 export const setTodoListsAC = (todoLists: Array<TodoListType>) => ({
     type: "SET-TODOLISTS",
@@ -54,13 +54,13 @@ export const setTodoListsAC = (todoLists: Array<TodoListType>) => ({
 }) as const
 
 export const fetchTodoListsTC = () =>
-    (dispatch: Dispatch<AllActionsType>) => {
-        dispatch(setAppStatusAC(RequestStatusType.loading))
-        todoListsApi.getTodoLists()
-            .then(todoLists => todoLists && dispatch(setTodoListsAC(todoLists)))
-            .catch(res => dispatch(setAppErrorAC(res)))
-            .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
-    }
+  (dispatch: Dispatch<AllActionsType>) => {
+      dispatch(setAppStatusAC(RequestStatusType.loading))
+      todoListsApi.getTodoLists()
+        .then(todoLists => todoLists && dispatch(setTodoListsAC(todoLists)))
+        .catch(res => dispatch(setAppErrorAC(res)))
+        .finally(() => dispatch(setAppStatusAC(RequestStatusType.idle)))
+  }
 
 export const changeTodoListFilterAC = (id: string, filter: FilterValuesType) => ({
     type: "CHANGE-TODOLIST-FILTER",
@@ -84,12 +84,12 @@ export type TodolistDomainType = TodoListType & {
 }
 
 export type TodoListsActionsType =
-    | ReturnType<typeof removeTodoListAC>
-    | ReturnType<typeof addTodoListAC>
-    | ReturnType<typeof changeTodoListFilterAC>
-    | ReturnType<typeof changeTodoListTitleAC>
-    | ReturnType<typeof setTodoListsAC>
-    | ReturnType<typeof changeTodolistEntityStatusAC>
+  | ReturnType<typeof removeTodoListAC>
+  | ReturnType<typeof addTodoListAC>
+  | ReturnType<typeof changeTodoListFilterAC>
+  | ReturnType<typeof changeTodoListTitleAC>
+  | ReturnType<typeof setTodoListsAC>
+  | ReturnType<typeof changeTodolistEntityStatusAC>
 
 //======reducer========================================================================================================
 
