@@ -22,7 +22,6 @@ export const Task: React.FC<TaskPropsType> = memo(
      changeTaskTitle
    }) => {
     
-    
     const onChangeNewTaskNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
       changeTaskStatus(task.id, e.target.checked ? TaskStatuses.Completed : TaskStatuses.New)
     }
