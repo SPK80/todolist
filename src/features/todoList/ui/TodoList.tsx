@@ -11,7 +11,7 @@ import {
   createTaskTC,
   fetchTasksTC,
   removeTaskTC,
-} from "../features/task/bll/tasks-reducer";
+} from "features/task/bll/tasks-reducer";
 import {
   TodolistDomainType,
   FilterValuesType,
@@ -21,8 +21,8 @@ import {
 } from "../bll/todolist-reducer";
 import {useAppSelector} from "app/bll/store";
 import {RequestStatusType} from "app/bll/appReducer";
-import {TaskStatuses} from "../features/task/dal/tasksApi";
-import {Task} from "../features/task";
+import {TaskStatuses} from "features/task/dal/tasksApi";
+import {Task} from "features/task";
 
 type TodolistPropsType = {
   todoList: TodolistDomainType,

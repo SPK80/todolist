@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
-import {TaskDomainType} from "app/features/todoLists/features/todoList/features/task/bll/tasks-reducer";
+import {TaskDomainType} from "features/task/bll/tasks-reducer";
 import {RequestStatusType} from "app/bll/appReducer";
-import {Task} from "app/features/todoLists/features/todoList/features/task";
-import {TaskStatuses} from "app/features/todoLists/features/todoList/features/task/dal/tasksApi";
+import {Task} from "features/task";
+import {TaskStatuses} from "features/task/dal/tasksApi";
 
 export default {
   title: 'todoList/task',

@@ -4,7 +4,7 @@ import {EditableSpan} from "common/components/EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {Checkbox, IconButton, LinearProgress} from "@material-ui/core";
 import {TaskDomainType} from "../bll/tasks-reducer";
-import {RequestStatusType} from "../../../../../../../bll/appReducer";
+import {RequestStatusType} from "app/bll/appReducer";
 import {TaskStatuses} from "../dal/tasksApi";
 
 type TaskPropsType = {

@@ -6,10 +6,15 @@ import {
   tasksReducer,
   TasksStateType
 } from "./tasks-reducer";
-import {addTodoListAC, TodolistDomainType, removeTodoListAC, todoListsReducer} from "../../../bll/todolist-reducer";
+import {
+  addTodoListAC,
+  TodolistDomainType,
+  removeTodoListAC,
+  todoListsReducer
+} from "features/todoList/bll/todolist-reducer";
 import {RequestStatusType} from "app/bll/appReducer";
 import {TaskPriorities, TaskStatuses} from "../dal/tasksApi";
-import {TodoListType} from "../../../../../dal/todoListsApi";
+import {TodoListType} from "features/todoLists/dal/todoListsApi";
 
 let todolistId1: string;
 let todolistId2: string;

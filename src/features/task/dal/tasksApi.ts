@@ -1,10 +1,10 @@
-import {instance} from "common/dal/instance";
+import {instance} from "common/api/instance";
 import {
   axiosErrorToString, checkErrorAndGetItems,
   checkResultCodeAndGetData, getDataFromAxiosResponse,
   ResponseWithErrorType,
   ResponseWithResultCodeType
-} from "common/dal/parseResponse";
+} from "common/api/parseResponse";
 
 export const tasksApi = {
   //=============TASKS================================================================================================

@@ -7,7 +7,7 @@ import {
   changeTodolistEntityStatusAC,
   removeTodoListAC,
   setTodoListsAC
-} from "../../../bll/todolist-reducer";
+} from "features/todoList/bll/todolist-reducer";
 
 //======actions=========================================================================================================
 

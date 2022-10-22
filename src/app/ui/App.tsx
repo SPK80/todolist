@@ -12,9 +12,9 @@ import {
   Typography
 } from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {fetchTodoListsTC} from "../features/todoLists/features/todoList/bll/todolist-reducer";
+import {fetchTodoListsTC} from "features/todoList/bll/todolist-reducer";
 import {useDispatch} from "react-redux";
-import {AddTodoListForm, TodoListsList} from "../features/todoLists";
+import {AddTodoListForm, TodoListsList} from "features/todoLists";
 import {useAppSelector} from "../bll/store";
 import {RequestStatusType} from "../bll/appReducer";
 import {ErrorSnackbar} from "common/components/ErrorSnackbar";
@@ -46,9 +46,7 @@ export const App = () => {
       <Container fixed style={{margin: "0"}}>
         <Grid container style={{margin: "20px 0 20px"}}>
           <Paper style={{padding: "10px"}}>
-            <AddTodoListForm
-              disabled={requestStatus === RequestStatusType.loading}
-            />
+            <AddTodoListForm disabled={requestStatus === RequestStatusType.loading}/>
           </Paper>
         </Grid>
         <Grid container spacing={3}>
