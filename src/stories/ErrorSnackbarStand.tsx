@@ -5,15 +5,15 @@ import {setAppErrorAC} from "../app/bll/appReducer";
 import {ErrorSnackbar} from "../common/components/ErrorSnackbar";
 
 export const ErrorSnackbarStand: React.FC = () => {
-    const dispatch = useDispatch()
-    return <div>
-        <Button
-            variant={"contained"}
-            color={"primary"}
-            onClick={() => dispatch(setAppErrorAC('Some error'))}
-        >
-            Dispatch Error
-        </Button>
-        <ErrorSnackbar/>
-    </div>
+	const dispatch = useDispatch()
+	return <div>
+		<Button
+			variant={"contained"}
+			color={"primary"}
+			onClick={() => dispatch(setAppErrorAC('Some error'))}
+		>
+			Dispatch Error
+		</Button>
+		<ErrorSnackbar/>
+	</div>
 }

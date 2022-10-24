@@ -10,6 +10,6 @@ export default {
 } as ComponentMeta<typeof ErrorSnackbarStand>;
 
 const Template: ComponentStory<typeof ErrorSnackbarStand> = () =>
-    <ErrorSnackbarStand/>
+  <ErrorSnackbarStand/>
 
 export const ErrorSnackbarStory = Template.bind({});
