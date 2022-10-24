@@ -39,8 +39,8 @@ export const AppContent = () => {
                         News
                     </Typography>
                     {isLoggedIn
-                        ? <Button onClick={logoutHandler} color="inherit">LogOut</Button>
-                        : <Button onClick={loginHandler} color="inherit">LogIn</Button>
+                        ? <Button onClick={logoutHandler} color="inherit" variant={"outlined"}>LogOut</Button>
+                        : <Button onClick={loginHandler} color="inherit" variant={"outlined"}>LogIn</Button>
                     }
 
                 </Toolbar>
