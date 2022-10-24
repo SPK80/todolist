@@ -7,8 +7,6 @@ import {
 } from "common/api/parseResponse";
 
 export const tasksApi = {
-  //=============TASKS================================================================================================
-  
   async getTasks(todolistId: string) {
     return instance.get<ResponseWithErrorType<TaskType>>(`todo-lists/${todolistId}/tasks`)
       .then(getDataFromAxiosResponse)
@@ -36,7 +34,6 @@ export const tasksApi = {
       .then(checkResultCodeAndGetData)
       .catch(axiosErrorToString)
   },
-  
 }
 
 //===Types==============================================================================================================

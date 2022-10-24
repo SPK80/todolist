@@ -28,6 +28,7 @@ export const Tasks: React.FC<PropsType> = ({todoListId, filter}) => {
   const changeTaskTitleHandler = useCallback((taskId: string, newTitle: string) => {
     dispatch(changeTaskTitleTC(taskId, todoListId, newTitle))
   }, [])
+  
   if (tasksForTodoList.length)
     return (
       <>
