@@ -52,8 +52,10 @@ export const Login: React.FC = () => {
         },
     })
 
-    const submitDisabled = !!formik.errors.email
+    const submitDisabled =
+        !!formik.errors.email
         || !!formik.errors.password
+        || (!formik.touched.email && !formik.touched.password)
         || requestStatus === RequestStatusType.loading
 
     if (isLoggedIn) return <Navigate to={'/'}/>
