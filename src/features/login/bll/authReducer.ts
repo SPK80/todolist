@@ -55,7 +55,6 @@ export const loginTC =
         authApi
             .login(data)
             .then(() => {
-                debugger
                 authApi
                     .me()
                     .then((res) => {
