@@ -12,7 +12,7 @@ export type LoginDataType = {
     rememberMe: boolean
 }
 
-type AuthResponseDataType = {
+export type AuthResponseDataType = {
     id: number
     email: string
     login: string
